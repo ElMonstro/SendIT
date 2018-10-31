@@ -219,11 +219,9 @@ form{
 
 }
 
-#register{
-    padding-bottom: 50px;
-    margin-top: 6%;
+.signin-quiz a{
+    text-decoration: none;
 }
-
 
 
 
@@ -242,6 +240,11 @@ form{
   
 .btn:hover {
     opacity:1;
+}
+
+#register .cont{
+    padding-top: 1%;
+    padding-bottom: 2%;
 }
 
 
