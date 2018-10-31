@@ -110,6 +110,11 @@ header li{
 
 .big-words{
     font-size: 30px;
+    font-weight: 800;
+}
+
+.small-words{
+    font-weight: 400;
 }
 
 .centered {
