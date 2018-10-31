@@ -259,6 +259,7 @@ form{
     grid-template-columns: 1fr;
     grid-auto-rows: min-content;
     grid-row-gap: 1em;   
+    float: left;
 
 }
 
@@ -297,6 +298,38 @@ form{
     font-size: 17px;
 }
 
+.dash-cont{
+    float: right;
+    width: 80%;
+    
+}
+
+.dashboard{
+    
+}
+
+.dashboard header{
+    background-color: #ffffff;
+    height: 50px;
+}
+
+.user {
+    float: right;
+    padding: 15px 10px 0 0;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.init{
+    background-color: rgb(9, 6, 34);
+    color: #ffffff;
+    padding: 0 10px 0 10px;
+    border-radius: 20px;
+}
+
+.acc-name{
+    text-align: center;
+}
 
 
 
