@@ -15,7 +15,7 @@ body{
 /* header */
 
 header{
-    background-color: rgb(62, 60, 78);
+    background-color: rgb(25, 21, 56);
 }
 header a{
     color:rgb(255, 255, 255);
@@ -32,7 +32,7 @@ header .cont{
 }
 
 .logo{
-    background-color:  rgb(62, 60, 78);
+    background-color:  rgb(25, 21, 56);
 }
 .logo img{
     height: 30px;
@@ -43,7 +43,7 @@ header a:hover{
     background-color: white;
     font-weight: bolder;
     border-radius: 5px;
-    color: rgb(62, 60, 78);
+    color: rgb(25, 21, 56);
 }
 
 
@@ -80,7 +80,7 @@ header li{
 
 .register a{
     background-color: #ffffff;
-    color: rgb(62, 60, 78);
+    color: rgb(25, 21, 56);
     border-radius: 5px;
     border:3px solid white;
 
