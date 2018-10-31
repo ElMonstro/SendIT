@@ -15,7 +15,7 @@ body{
 /* header */
 
 header{
-    background-color: rgb(25, 21, 56);
+    background-color: rgb(9, 6, 34);
 }
 header a{
     color:rgb(255, 255, 255);
@@ -32,7 +32,7 @@ header .cont{
 }
 
 .logo{
-    background-color:  rgb(25, 21, 56);
+    background-color:  rgb(9, 6, 34);
 }
 .logo img{
     height: 30px;
@@ -43,7 +43,7 @@ header a:hover{
     background-color: white;
     font-weight: bolder;
     border-radius: 5px;
-    color: rgb(25, 21, 56);
+    color: rgb(9, 6, 34);
 }
 
 
@@ -80,9 +80,44 @@ header li{
 
 .register a{
     background-color: #ffffff;
-    color: rgb(25, 21, 56);
+    color: rgb(9, 6, 34);
     border-radius: 5px;
     border:3px solid white;
 
 }
+
+/* Mantra */
+
+#mantra{
+    /* background-image: url(/UI/static/img/bg3.jpg); */
+    background-color: rgb(9, 6, 34);
+    height: 40%;
+    text-align: center;
+}
+
+#mantra img{
+    z-index: 1;
+    position: relative;
+    opacity: 0.04;
+    height: 100%;
+    width: 100%;
+}
+
+#words{
+    position: fixed;
+    color: #ffffff;
+}
+
+.big-words{
+    font-size: 30px;
+}
+
+.centered {
+    position: relative;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
 
