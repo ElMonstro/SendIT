@@ -2,12 +2,29 @@
 <html>
 <head>
     <meta charset="utf-8" />
+    <title>Login</title>
     <link rel="stylesheet" type="text/css" href="static/css/style.css" />
 </head>
 <body>
+        <header>
+                <div class="cont">
+                    <div class="brand">
+                        <div class="logo"><img src="/UI/static/img/logo.png" alt=""></div>
+                        <div class="name"><span>SendIT</span></div>
+                    </div>
+                    <nav>
+                       <div class="nav">
+                            <ol>
+                                <li ><a href="/index.html">About</a></li>
+                                <li class="register"><a href="UI/registration.html">Register</a></li>
+                            </ol>
+                        </div>     
+                    </nav>
+                </div>
+        </header>
         <section class="form-content" >
                 <form action="">
-                    <div class=container>
+                    <div class=cont>
                         <h1>Login</h1>          
                         
             
@@ -18,7 +35,9 @@
                         <input type="password" placeholder="Enter password" name="password" required><br>                    
                         
                         <button type="submit" class="btn">Login</button>
-                    </div>  
+                    </div> 
+                    <div class="signin-quiz">
+                            <p>Don't have an account? <a href="registration.html">Register.</a></p> 
                     
                 </form>    
               </section>        
