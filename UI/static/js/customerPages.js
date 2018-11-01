@@ -3,6 +3,10 @@
 /* Global variables*/
 var pricePerKg = 200;
 const allOrdersDiv = document.querySelector('#all-orders')
+var all = 'all';
+var canceled = 'Canceled';
+var delivered = 'Delivered';
+var inTransit = 'In-transit';
 
 var allOrders = {
     321: ['4 5345 343', '4 5343 343', 5, 'In-transit'],
@@ -19,7 +23,8 @@ function isEmpty(dict){
 }
 
 // Function to display order from
-function DisplayOrders(){
+function DisplayOrders(option){
+    allOrdersDiv.innerHTML = '';
     for(var order in allOrders){
         var pickupAdd = allOrders[order][0];
         var destAdd = allOrders[order][1];
@@ -35,7 +40,12 @@ function DisplayOrders(){
         <span><span class="weight">${weight}</span> Kgs</span>
         <span><span>Kshs</span> <span class="price"> ${price}</span></span>
         <span class="status">${status}</span>`;
-        allOrdersDiv.appendChild(orderDiv);
+        if (option == all){
+            allOrdersDiv.appendChild(orderDiv);
+        }
+        if (status == option){
+            allOrdersDiv.appendChild(orderDiv);
+        }
 
         
         
@@ -45,8 +55,15 @@ function DisplayOrders(){
 }
 
 
+
+// Add event listeners to side-panel options
+function AddEventListeners(){
+    ;
+}
+
+
 // Listen to DOMContentLoaded event
 
 document.addEventListener('DOMContentLoaded', () =>{    
-    DisplayOrders();
+    DisplayOrders(all);
 });
