@@ -20,12 +20,12 @@ function isEmpty(dict){
 
 // Function to display order from
 function DisplayOrders(){
-    for(var order in orders){
-        var pickupAdd = orders[order][0];
-        var destAdd = orders[order][1];
-        var weight = orders[order][2];
+    for(var order in allOrders){
+        var pickupAdd = allOrders[order][0];
+        var destAdd = allOrders[order][1];
+        var weight = allOrders[order][2];
         var price = weight * pricePerKg;
-        var status = orders[order][3];
+        var status = allOrders[order][3];
         const orderDiv = document.createElement('div');
         orderDiv.className = 'order';
         orderDiv.innerHTML = 
@@ -36,8 +36,17 @@ function DisplayOrders(){
         <span><span>Kshs</span> <span class="price"> ${price}</span></span>
         <span class="status">${status}</span>`;
         allOrdersDiv.appendChild(orderDiv);
+
+        
         
 
     }    
 
 }
+
+
+// Listen to DOMContentLoaded event
+
+document.addEventListener('DOMContentLoaded', () =>{    
+    DisplayOrders();
+});
