@@ -405,7 +405,6 @@ form{
 }
 
 .status{
-    background-color: rgb(175, 164, 4);
     padding: 2px;
     border-radius: 2px;
     text-align: center;
@@ -416,4 +415,16 @@ form{
 .current{
     border-left: 4px solid #fff;
     border-right: 4px solid #fff;
+}
+
+.canceled{
+    background-color: rgb(143, 62, 45);
+}
+
+.in-transit{
+    background-color: rgb(78, 65, 196);
+}
+
+.delivered{
+    background-color: rgb(30, 170, 72)
 }
