@@ -40,6 +40,19 @@ function DisplayOrders(option){
         <span><span class="weight">${weight}</span> Kgs</span>
         <span><span>Kshs</span> <span class="price"> ${price}</span></span>
         <span class="status">${status}</span>`;
+
+        const statusSpan = orderDiv.querySelector('.status');
+
+        if (status == canceled){
+            statusSpan.classList.add('canceled')            
+        }
+        if(status == inTransit){
+            statusSpan.classList.add('in-transit')           
+         }
+         if(status == delivered){
+            statusSpan.classList.add('delivered')
+        }  
+        
         if (option == all){
             allOrdersDiv.appendChild(orderDiv);
         }
