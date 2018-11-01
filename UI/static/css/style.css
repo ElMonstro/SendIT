@@ -278,6 +278,11 @@ form{
     grid-template-columns: 1fr 2fr 1fr
 }
 
+.option:hover{
+    border-left: 4px solid #fff;
+    border-right: 4px solid #fff;
+}
+
 .option img {
     height: 30px;
     padding-left: 25%;
@@ -406,4 +411,9 @@ form{
     text-align: center;
     color: #fff;
     width: 60%;
+}
+
+.current{
+    border-left: 4px solid #fff;
+    border-right: 4px solid #fff;
 }
