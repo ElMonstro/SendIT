@@ -289,9 +289,13 @@ form{
     cursor: pointer;
 }
 
-.opt-name{
+.opt-name {
     cursor: pointer;
-    padding-top: 7px; 
+    padding-top: 3px; 
+}
+
+.no{
+    padding-top: 3px
 }
 .new-order{
     background-color: #ffffff;
