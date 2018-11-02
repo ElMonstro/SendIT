@@ -529,3 +529,28 @@ form{
     display: grid;
     grid-template-columns: 2fr 1fr
 }
+
+/* User Profile */
+.order-statistics{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 40%;
+    margin: 10px 0 10px 0;
+}
+
+#dlvd{
+    background-color: rgb(30, 170, 72);
+    padding: 5px;
+    color: #fff;
+    margin-right: 5px;
+    border-radius: 3px;
+    
+}
+
+#trst{
+    background-color: rgb(78, 65, 196);
+    padding: 5px;
+    color: #fff;
+    margin-right: 5px;
+    border-radius: 3px;
+}
