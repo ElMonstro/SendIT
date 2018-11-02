@@ -50,7 +50,8 @@ function DisplayOrders(option){
         <span class="Destination">${destAdd}</span>
         <span><span class="weight">${weight}</span> Kgs</span>
         <span><span>Kshs</span> <span class="price"> ${price}</span></span>
-        <span class="status">${status}</span>`;
+        <span class="statuses"><span class="status">${status}</span><span class="cancel-btn">X</span></span>`;
+        
 
         var orderId = orderDiv.querySelector('.order-id');
         orderDiv.addEventListener('click', ()=>{
@@ -60,12 +61,14 @@ function DisplayOrders(option){
         });
 
         const statusSpan = orderDiv.querySelector('.status');
+        const cancelBtn =  orderDiv.querySelector('.cancel-btn');
 
         // Display different colors for different status
         if (status == canceled){
             statusSpan.classList.add('canceled')            
         }
         if(status == inTransit){
+            cancelBtn.style.display = 'grid'
             statusSpan.classList.add('in-transit')           
          }
          if(status == delivered){
