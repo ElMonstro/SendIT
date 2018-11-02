@@ -7,6 +7,7 @@ var all = 'all';
 var canceled = 'Canceled';
 var delivered = 'Delivered';
 var inTransit = 'In-transit';
+var singleOrder = 'order'
 const options = document.querySelectorAll('.option');
 var currentOption = all;
 const transitOption = document.querySelector('#transit')
@@ -53,7 +54,9 @@ function DisplayOrders(option){
 
         var orderId = orderDiv.querySelector('.order-id');
         orderDiv.addEventListener('click', ()=>{
-            viewOrder;
+            viewOrder();
+
+
         });
 
         const statusSpan = orderDiv.querySelector('.status');
@@ -75,7 +78,6 @@ function DisplayOrders(option){
         if (status == option){
             allOrdersDiv.appendChild(orderDiv);
         }
-
         
         
 
@@ -108,6 +110,7 @@ function AddEventListeners(){
 // Function to view a single order
 
 function viewOrder(){
+    allOrdersDiv.innerHTML = ''
     ordersTitle.style.display = 'none';
     allOrdersDiv.style.marginTop = '50px';
     const singleOrder = document.createElement('div')
@@ -152,8 +155,7 @@ function viewOrder(){
 // Listen to DOMContentLoaded event
 
 document.addEventListener('DOMContentLoaded', () =>{    
-   // DisplayOrders(all);
-   viewOrder();
+    DisplayOrders(all);
     AddEventListeners();
     
 });
