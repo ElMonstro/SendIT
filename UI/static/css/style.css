@@ -420,7 +420,8 @@ form{
     border-radius: 2px;
     text-align: center;
     color: #fff;
-    width: 60%;
+    width: 100%;
+    
 }
 
 .current{
@@ -508,4 +509,25 @@ form{
 
 .invincible{
     display: none;
+}
+
+.cancel-btn img{
+    height: 1%
+
+}
+
+.cancel-btn{
+    height: 20%;
+    color: red;
+    font-size: 20px;
+    float: right;
+    font-weight: bold;
+    justify-content: end;
+    padding-right: 8px;
+    display: none;
+}
+
+.statuses{
+    display: grid;
+    grid-template-columns: 2fr 1fr
 }
