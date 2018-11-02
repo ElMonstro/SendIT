@@ -7,6 +7,12 @@ var all = 'all';
 var canceled = 'Canceled';
 var delivered = 'Delivered';
 var inTransit = 'In-transit';
+const options = document.querySelectorAll('.option');
+var currentOption = all;
+const transitOption = document.querySelector('#transit')
+const canceledOption = document.querySelector('#cancel')
+const allOption = document.querySelector('#all')
+const deliveredOption = document.querySelector('#deliver')
 
 var allOrders = {
     321: ['4 5345 343', '4 5343 343', 5, 'In-transit'],
@@ -24,6 +30,7 @@ function isEmpty(dict){
 
 // Function to display order from
 function DisplayOrders(option){
+    currentOption = option;
     allOrdersDiv.innerHTML = '';
     for(var order in allOrders){
         var pickupAdd = allOrders[order][0];
@@ -43,6 +50,7 @@ function DisplayOrders(option){
 
         const statusSpan = orderDiv.querySelector('.status');
 
+        // Display different colors for different status
         if (status == canceled){
             statusSpan.classList.add('canceled')            
         }
@@ -68,15 +76,33 @@ function DisplayOrders(option){
 }
 
 
+    
 
 // Add event listeners to side-panel options
 function AddEventListeners(){
-    ;
+    transitOption.addEventListener('click', ()=>{
+        DisplayOrders(inTransit)
+    });
+
+    deliveredOption.addEventListener('click', ()=>{
+        DisplayOrders(delivered)
+    });
+
+    canceledOption.addEventListener('click', ()=>{
+        DisplayOrders(canceled)
+    });
+
+    allOption.addEventListener('click', ()=>{
+        DisplayOrders(all)
+    });
 }
+
 
 
 // Listen to DOMContentLoaded event
 
 document.addEventListener('DOMContentLoaded', () =>{    
     DisplayOrders(all);
+    AddEventListeners();
+    
 });
