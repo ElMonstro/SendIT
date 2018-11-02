@@ -481,6 +481,11 @@ form{
     padding-top: 15px;
 }
 
+#dest-location .content{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
 .label{
     color: rgb(92, 91, 110);
 }
@@ -492,11 +497,15 @@ form{
     border-radius: 5px;
     color: #fff;
     cursor: pointer;
-    display: none;
+    width: 15%
 }
 
 #stts-color{
     padding: 5px 20px 5px 10px;
     border-radius: 5px;
     color: #fff;
+}
+
+.invincible{
+    display: none;
 }

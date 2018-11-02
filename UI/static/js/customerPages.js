@@ -16,6 +16,7 @@ const deliveredOption = document.querySelector('#deliver')
 const ordersTitle = document.querySelector('#title')
 
 
+
 var allOrders = {
     321: ['4 5345 343', '4 5343 343', 5, 'In-transit'],
     453: ['4 5435 324', '6 5356 353', 3, 'Delivered'],
@@ -135,10 +136,14 @@ function viewOrder(){
     </div>
     <div id="dest-location" class="detail">
         <span class="label">Destination Location:</span>
-        <span class="content"><input id="dest-input" type="text" value="3-5334-533"><span id="save-btn">Save</span></span>
+        <span class="content"><input id="dest-input" type="text" value="3-5334-533"><span><span id="save-btn" class="invincible">Save</span></span></span>
     </div>
     </div>`
-
+    var inputDiv = singleOrder.querySelector('#dest-input');
+    var saveBtn = singleOrder.querySelector('#save-btn');
+    inputDiv.addEventListener('input', ()=>{
+        saveBtn.style.display = 'grid';       
+    });
     allOrdersDiv.appendChild(singleOrder);
 
 }
