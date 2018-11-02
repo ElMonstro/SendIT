@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
     <link rel="stylesheet" href="static/css/style.css">
 </head>
+
 <body>
-    <div class="dashboard">        
+    <div class="dashboard">
         <div class="side-panel">
             <div class="brand">
-                        <div class="logo"><img src="static/img/logo.svg" alt=""></div>
-                        <div class="name"><span>SendIT</span></div>
+                <div class="logo"><img src="static/img/logo.svg" alt=""></div>
+                <div class="name"><span>SendIT</span></div>
             </div>
-            <div class="new-order"><span><img src="static/img/add.svg" alt=""></span> <span class="txt">New Order</span> </div>
+            <div class="new-order"><span><img src="static/img/add.svg" alt=""></span> <span class="txt">New Order</span>
+            </div>
             <div class="option" id="all">
-                    <span class="icon"><img src="static/img/choices.svg" alt=""></span>
-                    <span class="opt-name">All Placed orders </span>
-                    <span class="no">4</span>
+                <span class="icon"><img src="static/img/choices.svg" alt=""></span>
+                <span class="opt-name">All Placed orders </span>
+                <span class="no">4</span>
             </div>
             <div class="option" id="transit">
                 <span class="icon"><img src="static/img/delivery-truck.svg" alt=""></span>
@@ -24,67 +27,48 @@
                 <span class="no">5</span>
             </div>
             <div class="option" id="deliver">
-                    <span class="icon"><img src="static/img/shipped.svg" alt=""></span>
-                    <span class="opt-name">Delivered Orders</span>
-                    <span class="no" >2</span>
+                <span class="icon"><img src="static/img/shipped.svg" alt=""></span>
+                <span class="opt-name">Delivered Orders</span>
+                <span class="no">2</span>
             </div>
             <div class="option" id="cancel">
-                    <span class="icon"><img src="static/img/canceled.svg" alt=""></span>
-                    <span class="opt-name">Canceled orders</span>
-                    <span class="no">4</span>
+                <span class="icon"><img src="static/img/canceled.svg" alt=""></span>
+                <span class="opt-name">Canceled orders</span>
+                <span class="no">4</span>
             </div>
             <div class="option" id="notification">
                 <span class="icon"><img src="static/img/notification.svg" alt=""></span>
                 <span class="opt-name">Notifications </span>
                 <span class="no">4</span>
-            </div>  
+            </div>
 
         </div>
-        <div  class="dash-cont">
+        <div class="dash-cont">
             <header>
                 <div class="user"><span class="acc-name">Josh</span><span class="init">J</span></div>
             </header>
             <div class="cont">
-                <div class="heading"><span>All your parcel Orders</span></div>
-                <div class="titles" >
-                            <span class="order-no">Order #</span>
-                            <span>Pickup Address</span>
-                            <span>Destination Address</span>
-                            <span>Weight</span>
-                            <span>Price</span>
-                            <span>Status</span>
+                <div id="title">
+                    <div class="heading"><span>All your parcel Orders</span></div>
+                    <div class="titles">
+                        <span class="order-no">Order #</span>
+                        <span>Pickup Address</span>
+                        <span>Destination Address</span>
+                        <span>Weight</span>
+                        <span>Price</span>
+                        <span>Status</span>
+                    </div>
                 </div>
                 <div id="all-orders">
-                    <div class="order">
-                        <span class="order-id">213</span>
-                        <span class="pickup">4 5424 453</span>
-                        <span class="Destination">3 6345 532</span>
-                        <span><span class="weight">3</span> Kgs</span>
-                        <span><span>Kshs</span> <span class="price"> 450</span></span>
-                        <span class="status">In-transit</span>
-                    </div>                    
-                    <div class="order">
-                            <span class="order-id">213</span>
-                            <span class="pickup">4 5424 453</span>
-                            <span class="Destination">3 6345 532</span>
-                            <span><span class="weight">3</span> Kgs</span>
-                            <span><span>Kshs</span> <span class="price"> 450</span></span>
-                            <span class="status">In-transit</span>
-                    </div> 
-                    <div class="order">
-                            <span class="order-id">213</span>
-                            <span class="pickup">4 5424 453</span>
-                            <span class="Destination">3 6345 532</span>
-                            <span><span class="weight">3</span> Kgs</span>
-                            <span><span>Kshs</span> <span class="price"> 450</span></span>
-                            <span class="status">In-transit</span>
-                        </div>         
+                    <!-- To be filled dynamically -->
+                                           
                 </div>
 
             </div>
         </div>
     </div>
-    
+
 </body>
 <script src="static/js/customerPages.js"></script>
+
 </html>
