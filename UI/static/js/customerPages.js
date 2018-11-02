@@ -102,7 +102,7 @@ function AddEventListeners(){
 // Listen to DOMContentLoaded event
 
 document.addEventListener('DOMContentLoaded', () =>{    
-    DisplayOrders(all);
+    //DisplayOrders(all);
     AddEventListeners();
     
 });
