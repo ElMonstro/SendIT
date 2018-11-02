@@ -439,3 +439,58 @@ form{
 .delivered{
     background-color: rgb(30, 170, 72)
 }
+
+/* Order Details */
+
+#single-order{
+    display: grid;
+    grid-template-rows: repeat(6, 1fr);
+    justify-content: center;
+    background-color: #fff;
+    padding: 2% 0 2% 0;
+}
+
+
+
+.detail{
+    display: grid;
+    grid-template-columns: 1fr 1fr;    
+
+}
+
+.dest-input{
+    border: none;
+    padding: 0;
+    
+}
+
+#dest-location input[type=text] {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    border-radius: 0;
+    background-color: #fff;
+    -moz-border-bottom-colors: none;
+    font-size: inherit;
+    border-color: #fff;
+    border-bottom-color: rgb(9, 6, 34);
+    
+    }
+
+#dest-location .label{
+    padding-top: 15px;
+}
+
+.label{
+    color: rgb(92, 91, 110);
+}
+
+#save-btn{
+    margin-left: 10%;
+    background-color: rgb(30, 170, 72);
+    padding: 14px;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    display: none;
+}
