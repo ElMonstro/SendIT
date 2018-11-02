@@ -13,6 +13,8 @@ const transitOption = document.querySelector('#transit')
 const canceledOption = document.querySelector('#cancel')
 const allOption = document.querySelector('#all')
 const deliveredOption = document.querySelector('#deliver')
+const ordersTitle = document.querySelector('#title')
+
 
 var allOrders = {
     321: ['4 5345 343', '4 5343 343', 5, 'In-transit'],
@@ -47,6 +49,11 @@ function DisplayOrders(option){
         <span><span class="weight">${weight}</span> Kgs</span>
         <span><span>Kshs</span> <span class="price"> ${price}</span></span>
         <span class="status">${status}</span>`;
+
+        var orderId = orderDiv.querySelector('.order-id');
+        orderDiv.addEventListener('click', ()=>{
+            viewOrder;
+        });
 
         const statusSpan = orderDiv.querySelector('.status');
 
@@ -97,12 +104,51 @@ function AddEventListeners(){
     });
 }
 
+// Function to view a single order
+
+function viewOrder(){
+    ordersTitle.style.display = 'none';
+    allOrdersDiv.style.marginTop = '50px';
+    const singleOrder = document.createElement('div')
+    singleOrder.id = 'single-order';
+    singleOrder.innerHTML = 
+    `<span class="heading">Order Number: <span id="order-no">435</span></span>
+    <div id="delivery-stts" class="detail">
+        <span class="label">Delivery status:</span>
+        <span class="content "><span id="stts-color" class="in-transit">In-transit</span></span>
+    </div>
+    <div id="recpnt-name" class="detail">
+        <span class="label">Recepient Name:</span>
+        <span class="content">Joshua Moracha</span>
+    </div>
+    <div id="recpnt-no" class="detail">
+        <span class="label">Recepient Number:</span>
+        <span class="content">0734543564</span>
+    </div>
+    <div id="pickup-location" class="detail">
+        <span class="label">Pickup Location:</span>
+        <span class="content">5-5332-532</span>
+    </div>
+    <div id="current-location" class="detail">
+        <span class="label">Current Locaton:</span>
+        <span class="content">Mai Mahiu</span>
+    </div>
+    <div id="dest-location" class="detail">
+        <span class="label">Destination Location:</span>
+        <span class="content"><input id="dest-input" type="text" value="3-5334-533"><span id="save-btn">Save</span></span>
+    </div>
+    </div>`
+
+    allOrdersDiv.appendChild(singleOrder);
+
+}
 
 
 // Listen to DOMContentLoaded event
 
 document.addEventListener('DOMContentLoaded', () =>{    
-    //DisplayOrders(all);
+   // DisplayOrders(all);
+   viewOrder();
     AddEventListeners();
     
 });
