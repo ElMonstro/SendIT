@@ -512,13 +512,11 @@ form{
 }
 
 .cancel-btn img{
-    height: 1%
+    height: 100%
 
 }
 
 .cancel-btn{
-    height: 20%;
-    color: red;
     font-size: 20px;
     float: right;
     font-weight: bold;

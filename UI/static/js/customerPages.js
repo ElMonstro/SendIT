@@ -50,7 +50,7 @@ function DisplayOrders(option){
         <span class="Destination">${destAdd}</span>
         <span><span class="weight">${weight}</span> Kgs</span>
         <span><span>Kshs</span> <span class="price"> ${price}</span></span>
-        <span class="statuses"><span class="status">${status}</span><span class="cancel-btn">X</span></span>`;
+        <span class="statuses"><span class="status">${status}</span><span class="cancel-btn"><img src="static/img/cancel.png"></span></span>`;
         
 
         var orderId = orderDiv.querySelector('.order-id');
