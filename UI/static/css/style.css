@@ -261,12 +261,16 @@ form{
     grid-auto-rows: min-content;
     grid-row-gap: 1em;   
     float: left;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
 
 }
 
 .side-panel .brand{
     padding-left: 25%;
-    padding-top: 15px;
+    padding-top: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #fff;
 }
 
 .option{
@@ -274,11 +278,25 @@ form{
     grid-template-columns: 1fr 2fr 1fr
 }
 
-.option img {
-    height: 30px;
-    padding-left: 25%
+.option:hover{
+    border-left: 4px solid #fff;
+    border-right: 4px solid #fff;
 }
 
+.option img {
+    height: 30px;
+    padding-left: 25%;
+    cursor: pointer;
+}
+
+.opt-name {
+    cursor: pointer;
+    padding-top: 3px; 
+}
+
+.no{
+    padding-top: 3px
+}
 .new-order{
     background-color: #ffffff;
     color: rgb(9, 6, 34);
@@ -286,6 +304,9 @@ form{
     border-radius: 5px;
     display: grid;
     grid-template-columns: 1fr 3fr;
+    background-color: #fff;
+    cursor: pointer;
+    width: 78%;
     
 }
 .new-order img{
@@ -302,13 +323,32 @@ form{
 .dash-cont{
     float: right;
     width: 80%;
+    background-color: rgb(241, 239, 245);
+    height: 800px;
     
+}
+
+.dash-cont .cont{
+    width: 90%;
+    border-radius: 5px;
+    color: rgb(9, 6, 34);
+    padding: 10px;
+    
+    
+}
+
+.dash-cont .heading{
+    margin-top: 7px;
+    padding-left: 4px;
 }
 
 
 .dashboard header{
     background-color: #ffffff;
-    height: 50px;
+    height: 53px;
+    position: sticky;
+    top: 0;
+    box-shadow: 0px 0px 5px rgba(100, 100, 100, 0.49);
 }
 
 .user {
@@ -329,9 +369,67 @@ form{
     text-align: center;
 }
 
-
-
+#all-orders{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-row-gap: 1px;
+    padding: 0 2px 1px 2px ;
+    box-shadow: 0px 3px 5px rgba(100, 100, 100, 0.49);
     
 
+}
 
+.order{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);    
+    background-color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+}
 
+.order:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+
+.titles{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); 
+    padding: 7px; 
+    color: rgb(92, 91, 110);
+    margin: 1px 0 2px 0;
+    background-color: inherit;
+    
+
+}
+
+.dashboard{
+    color: rgb(9, 6, 34);   
+    
+}
+
+.status{
+    padding: 2px;
+    border-radius: 2px;
+    text-align: center;
+    color: #fff;
+    width: 60%;
+}
+
+.current{
+    border-left: 4px solid #fff;
+    border-right: 4px solid #fff;
+}
+
+.canceled{
+    background-color: rgb(143, 62, 45);
+}
+
+.in-transit{
+    background-color: rgb(78, 65, 196);
+}
+
+.delivered{
+    background-color: rgb(30, 170, 72)
+}
