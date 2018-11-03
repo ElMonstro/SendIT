@@ -89,8 +89,12 @@ function DisplayOrders(user, option) {
 
 
         var orderId = orderDiv.querySelector('.order-id');
-        orderDiv.addEventListener('click', () => {
-            viewOrder();
+        orderDiv.addEventListener('click', (e) => {
+            if(e.target.classList.contains('edit-btn')){
+                viewOrder(user, edit);
+            }else{
+                viewOrder(user, view);
+            }
         });
 
         const statusSpan = orderDiv.querySelector('.status');
@@ -295,8 +299,7 @@ function viewOrder(user, mode) {
 // Listen to DOMContentLoaded event
 
 document.addEventListener('DOMContentLoaded', () => {
-    // DisplayOrders(admin, all);
-    viewOrder(admin, edit);
+    DisplayOrders(admin, all);
     if (pageTitle == 'Admin Dashboard') {
         AddEventListeners(admin);
     } else {
