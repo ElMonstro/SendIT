@@ -265,26 +265,25 @@ function viewOrder(user, mode) {
     </div>
     </div>`
     
-    const editButton = singleOrder.querySelector('.edit-button');
-    const statusText = singleOrder.querySelector('#stts-color').innerHTML
     
-    // If the parcel hasnt been delivered
-    if(statusText == inTransit){
+
+    if (mode == view && pageTitle == 'Dashboard'){
+        const statusText = singleOrder.querySelector('#stts-color').innerHTML
+        const editButton = singleOrder.querySelector('.edit-button');
+
+        // If the parcel hasnt been delivered
+        if(statusText == inTransit){
         editButton.style.display = 'inline'
+
+        editButton.addEventListener('click', ()=>{
+            viewOrder(client, edit);
+        });
     }
+
 
     if (mode == edit){
         editButton.style.display = 'none';
     }
-
-    if (pageTitle == 'Admin Dashboard'){
-         editButton.addEventListener('click', ()=>{
-        viewOrder(admin, edit);
-    });
-    }else{
-        editButton.addEventListener('click', ()=>{
-            viewOrder(client, edit)
-    });
     }
    
     
