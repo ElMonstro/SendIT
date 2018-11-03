@@ -238,7 +238,7 @@ function viewOrder(user, mode) {
 
     // Both edit and view mode and both users 
     singleOrder.innerHTML =
-        `<span class="heading">Order Number: <span id="order-no">435</span></span>
+        `<span class="heading">Order Number: <span id="order-no">435</span><span class="edit-button">Edit</span></span>
     <div id="delivery-stts" class="detail">
         <span class="label">Delivery status:</span>
         <span class="content split">${statusHtml}<span><span id="status" class="save-btn invincible">Save</span></span></span>
