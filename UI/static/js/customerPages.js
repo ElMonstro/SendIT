@@ -64,6 +64,8 @@ function isEmpty(dict) {
 
 // Function to display order from
 function DisplayOrders(user, option) {
+    allOrdersDiv.style.marginTop = '0px';
+    ordersTitle.style.display = 'grid';
     currentOption = option;
     allOrdersDiv.innerHTML = '';
     var actionButton = '<span class="action-btn cancel-btn">Cancel</span>'
