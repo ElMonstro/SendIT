@@ -2,12 +2,17 @@
 
 /* Global variables*/
 var pricePerKg = 200;
-const allOrdersDiv = document.querySelector('#all-orders')
+// Display order options
 var all = 'all';
 var canceled = 'Canceled';
 var delivered = 'Delivered';
 var inTransit = 'In-transit';
-var singleOrder = 'order'
+var singleOrder = 'order';
+var admin = 'admin';
+var client = 'client';
+
+// Elements
+const allOrdersDiv = document.querySelector('#all-orders')
 const options = document.querySelectorAll('.option');
 var currentOption = all;
 const transitOption = document.querySelector('#transit')
@@ -15,9 +20,9 @@ const canceledOption = document.querySelector('#cancel')
 const allOption = document.querySelector('#all')
 const deliveredOption = document.querySelector('#deliver')
 const ordersTitle = document.querySelector('#title')
+const orderStatistics = document.querySelector('.order-statistics')
 
-
-
+// Order containers
 var allOrders = {
     321: ['4 5345 343', '4 5343 343', 5, 'In-transit'],
     453: ['4 5435 324', '6 5356 353', 3, 'Delivered'],
@@ -27,15 +32,33 @@ var allOrders = {
     633: ['5 6535 453', '8 5465 742', 6,  'Canceled']
 }
 
+var allOrdersAdmin = {
+    321: ['4 5345 343', '4 5343 343', 5, 'In-transit'],
+    453: ['4 5435 324', '6 5356 353', 3, 'Delivered'],
+    133: ['5 6535 453', '8 5465 742', 6,  'Canceled'],
+    301: ['4 5345 343', '4 5343 343', 5, 'In-transit'],
+    353: ['4 5435 324', '6 5356 353', 3,  'Delivered'],
+    633: ['5 6535 453', '8 5465 742', 6,  'Canceled'],
+    365: ['4 5345 343', '4 5343 343', 5, 'In-transit'],
+    495: ['4 5435 324', '6 5356 353', 3, 'Delivered'],
+    127: ['5 6535 453', '8 5465 742', 6,  'Canceled'],
+    249: ['4 5345 343', '4 5343 343', 5, 'In-transit'],
+    132: ['4 5435 324', '6 5356 353', 3,  'Delivered'],
+    808: ['5 6535 453', '8 5465 742', 6,  'Canceled']
+}
+
 // Fuction to check if tray is empty
 function isEmpty(dict){
     return Object.getOwnPropertyNames(dict) == 0;
 }
 
 // Function to display order from
-function DisplayOrders(option){
+function DisplayOrders(user, option){
     currentOption = option;
     allOrdersDiv.innerHTML = '';
+    if (user == admin){
+        allOrders = allOrdersAdmin;
+    }
     for(var order in allOrders){
         var pickupAdd = allOrders[order][0];
         var destAdd = allOrders[order][1];
@@ -56,8 +79,6 @@ function DisplayOrders(option){
         var orderId = orderDiv.querySelector('.order-id');
         orderDiv.addEventListener('click', ()=>{
             viewOrder();
-
-
         });
 
         const statusSpan = orderDiv.querySelector('.status');
@@ -91,7 +112,7 @@ function DisplayOrders(option){
 
     
 
-// Add event listeners to side-panel options
+// Add event listeners to side-panel options and order stats
 function AddEventListeners(){
     transitOption.addEventListener('click', ()=>{
         DisplayOrders(inTransit)
@@ -108,6 +129,19 @@ function AddEventListeners(){
     allOption.addEventListener('click', ()=>{
         DisplayOrders(all)
     });
+
+    orderStatistics.addEventListener ('click', (e)=>{
+        if (e.target.id == 'dlvd'){
+            DisplayOrders(admin, delivered);          
+        }
+        if (e.target.id == 'cncld'){
+            DisplayOrders(admin, canceled);          
+        }
+        if (e.target.id == 'trst'){
+            DisplayOrders(admin, inTransit);            
+        }
+
+    })
 }
 
 // Function to view a single order
