@@ -233,6 +233,7 @@ function viewOrder(user, mode) {
         <option value="intransit">In-transit</option>
         <option value="delivered">Delivered</option>
       </select></span></span> `;
+      singleOrder.classList.add('edit-mode');
 
     }
 
@@ -276,7 +277,7 @@ function viewOrder(user, mode) {
         editButton.style.display = 'inline'
 
         editButton.addEventListener('click', ()=>{
-            viewOrder(client, edit);
+        viewOrder(client, edit);
         });
     }
 
