@@ -200,33 +200,38 @@ function viewOrder(user, mode) {
     var statusHtml = '<span id="stts-color" class="in-transit">In-transit</span>';
     var editModeInputLabel = '';
     var editModeInputLabelAdmin = '';
-    
 
+    
+    // All view modes
     if (mode == view) {
         singleOrder.classList.add('view-mode')
     }
 
+    // Client view mode
     if (mode == edit && user == client) {
         editModeInputLabel = 'edit-input-label'
         destLocationHtml = '<input id="dest-input" class="edit-input" type="text" value="3-5334-533">';
     }
-
+    
+    // Admin view mode
     if (mode == edit && user == admin) {
         editModeInputLabelAdmin = 'edit-input-label'
         singleOrder.id = 'admin-single-order';
         singleOrder.className = 'single-order'
-        currentLocationHtml = '<input id="current-input" class="edit-input" type="text" value="Kisii">';
-        statusHtml = ` <span><span><select>
+        currentLocationHtml = '<input id="curr-loc-input" class="edit-input" type="text" value="Kisii">';
+        statusHtml = ` <span><span><select id="status-select">
         <option value="intransit">In-transit</option>
         <option value="delivered">Delivered</option>
-      </select></span> <span id="save-status-btn" class="invincible">Save</span></span></span> `;
+      </select></span></span> `;
 
     }
+
+    // Both edit and view mode and both users 
     singleOrder.innerHTML =
         `<span class="heading">Order Number: <span id="order-no">435</span></span>
     <div id="delivery-stts" class="detail">
         <span class="label">Delivery status:</span>
-        <span class="content ">${statusHtml}</span>
+        <span class="content split">${statusHtml}<span><span id="status" class="save-btn invincible">Save</span></span></span>
     </div>
     <div id="recpnt-name" class="detail">
         <span class="label">Recepient Name:</span>
@@ -242,20 +247,45 @@ function viewOrder(user, mode) {
     </div>
     <div id="current-location" class="detail">
         <span class="label ${editModeInputLabelAdmin}">Current Locaton:</span>
-        ${currentLocationHtml}
+        <span class="content split">${currentLocationHtml}<span><span id="save-curr-loc" class="save-btn invincible" >Save</span></span></span>
     </div>
     <div id="dest-location" class="detail">
         <span class="label ${editModeInputLabel}">Destination Location:</span>
-<span class="content">${destLocationHtml}<span><span id="save-btn" class="invincible">Save</span></span></span>
+<span class="content split">${destLocationHtml}<span><span id="dest-loc" class="save-btn invincible">Save</span></span></span>
     </div>
     </div>`
-    var inputDiv = singleOrder.querySelector('#dest-input');
-    var saveBtn = singleOrder.querySelector('#save-btn');
-
+    
+    
+    // Client edit mode
     if (mode == edit && user == client) {
-        inputDiv.addEventListener('input', () => {
-            saveBtn.style.display = 'grid';
+        // Get elementd
+        const destInputDiv = singleOrder.querySelector('#dest-input');
+        const saveDestBtn = singleOrder.querySelector('#dest-loc');
+
+        // Add event listeners
+        destInputDiv.addEventListener('input', () => {
+            saveDestBtn.style.display = 'grid';
         });
+    }
+
+    // Admin edit mode
+    if(mode == edit && user == admin){
+        // Get elements
+        const statusSelector = singleOrder.querySelector('#status-select');
+        const currLocationInput = singleOrder.querySelector('#curr-loc-input');
+        const saveStatusBtn = singleOrder.querySelector('#status');
+        const saveCurrLocation = singleOrder.querySelector('#save-curr-loc')
+
+        // Add event listeners
+        statusSelector.addEventListener('change', ()=>{
+            saveStatusBtn.style.display = 'grid'            
+        });
+
+        currLocationInput.addEventListener('input', ()=>{
+            saveCurrLocation.style.display = 'grid';
+        });
+
+
     }
     allOrdersDiv.appendChild(singleOrder);
 
