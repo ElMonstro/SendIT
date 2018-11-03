@@ -15,12 +15,19 @@ var client = 'client';
 const allOrdersDiv = document.querySelector('#all-orders')
 const options = document.querySelectorAll('.option');
 var currentOption = all;
+const ordersTitle = document.querySelector('#title')
+const orderStatistics = document.querySelector('.order-statistics');
+const pageTitle = document.querySelector('title').innerText
+
 const transitOption = document.querySelector('#transit')
 const canceledOption = document.querySelector('#cancel')
 const allOption = document.querySelector('#all')
 const deliveredOption = document.querySelector('#deliver')
-const ordersTitle = document.querySelector('#title')
-const orderStatistics = document.querySelector('.order-statistics')
+
+const adminTransitOption = document.querySelector('#admin-transit')
+const adminCanceledOption = document.querySelector('#admin-cancel')
+const adminAllOption = document.querySelector('#admin-all')
+const adminDeliveredOption = document.querySelector('#admin-deliver')
 
 // Order containers
 var allOrders = {
@@ -113,35 +120,59 @@ function DisplayOrders(user, option){
     
 
 // Add event listeners to side-panel options and order stats
-function AddEventListeners(){
+function AddEventListeners(user){
+
+    if (user == client){
+    // Client dashboard options
     transitOption.addEventListener('click', ()=>{
-        DisplayOrders(inTransit)
+        DisplayOrders(client, inTransit)
     });
 
     deliveredOption.addEventListener('click', ()=>{
-        DisplayOrders(delivered)
+        DisplayOrders(client, delivered)
     });
 
     canceledOption.addEventListener('click', ()=>{
-        DisplayOrders(canceled)
+        DisplayOrders(client, canceled)
     });
 
     allOption.addEventListener('click', ()=>{
-        DisplayOrders(all)
+        DisplayOrders(client, all)
+    });
+    }
+   
+    if (user == admin){
+    // Admin dashboard options
+    adminTransitOption.addEventListener('click', ()=>{
+        DisplayOrders(admin, inTransit)
     });
 
+    adminDeliveredOption.addEventListener('click', ()=>{
+        DisplayOrders(admin, delivered)
+    });
+
+    adminCanceledOption.addEventListener('click', ()=>{
+        DisplayOrders(admin, canceled)
+    });
+
+    adminAllOption.addEventListener('click', ()=>{
+        DisplayOrders(admin, all)
+    });
+
+    }
+   
+    // Order statistics event listener for both admin and client dashboards
     orderStatistics.addEventListener ('click', (e)=>{
         if (e.target.id == 'dlvd'){
-            DisplayOrders(admin, delivered);          
+            DisplayOrders(user, delivered);          
         }
         if (e.target.id == 'cncld'){
-            DisplayOrders(admin, canceled);          
+            DisplayOrders(user, canceled);          
         }
         if (e.target.id == 'trst'){
-            DisplayOrders(admin, inTransit);            
+            DisplayOrders(user, inTransit);            
         }
-
-    })
+    });
 }
 
 // Function to view a single order
@@ -192,7 +223,12 @@ function viewOrder(){
 // Listen to DOMContentLoaded event
 
 document.addEventListener('DOMContentLoaded', () =>{    
-    DisplayOrders(all);
-    AddEventListeners();
+    DisplayOrders(admin, all);
+    if (pageTitle == 'Admin Dashboard'){
+       AddEventListeners(admin);        
+    }else{
+       AddEventListeners(client);
+    }
+    
     
 });
