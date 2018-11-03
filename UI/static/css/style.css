@@ -303,27 +303,34 @@ form{
 .no{
     padding-top: 3px
 }
-.new-order{
-    background-color: #ffffff;
+#new-order{
+    background-color: #fff;
     color: rgb(9, 6, 34);
     margin: 5% 10% 0 4%;
     border-radius: 5px;
     display: grid;
     grid-template-columns: 1fr 3fr;
-    background-color: #fff;
     cursor: pointer;
-    width: 78%;
-    
+    width: 78%;    
 }
-.new-order img{
+
+#new-order:hover{
+    background-color: rgb(242, 241, 248);
+}
+#new-order img{
     height: 25px;
     padding-left: 3px;
     padding-top: 4px;
 }
 
-.new-order .txt{
-    margin-top: 4px;
-    font-size: 17px;
+.create-order{
+    text-decoration: none;
+}
+
+#new-order .txt{    
+    font-size: 19px;
+    font-weight: 300;
+    color: rgb(9, 6, 34);
 }
 
 .dash-cont{
