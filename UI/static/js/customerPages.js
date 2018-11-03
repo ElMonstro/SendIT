@@ -63,8 +63,10 @@ function isEmpty(dict){
 function DisplayOrders(user, option){
     currentOption = option;
     allOrdersDiv.innerHTML = '';
+    var actionButton = '<span class="action-btn cancel-btn"><img src="static/img/cancel.png"></span>'
     if (user == admin){
         allOrders = allOrdersAdmin;
+        actionButton = '<span class="action-btn edit-btn" >Edit</span>'
     }
     for(var order in allOrders){
         var pickupAdd = allOrders[order][0];
@@ -80,7 +82,7 @@ function DisplayOrders(user, option){
         <span class="Destination">${destAdd}</span>
         <span><span class="weight">${weight}</span> Kgs</span>
         <span><span>Kshs</span> <span class="price"> ${price}</span></span>
-        <span class="statuses"><span class="status">${status}</span><span class="cancel-btn"><img src="static/img/cancel.png"></span></span>`;
+        <span class="statuses"><span class="status">${status}</span>${actionButton}</span></span>`;
         
 
         var orderId = orderDiv.querySelector('.order-id');
@@ -89,14 +91,19 @@ function DisplayOrders(user, option){
         });
 
         const statusSpan = orderDiv.querySelector('.status');
-        const cancelBtn =  orderDiv.querySelector('.cancel-btn');
+        const actionBtn =  orderDiv.querySelector('.action-btn');
+
+        actionBtn.addEventListener('click',
+        ()=>{
+            console.log('edited')
+        })
 
         // Display different colors for different status
         if (status == canceled){
             statusSpan.classList.add('canceled')            
         }
         if(status == inTransit){
-            cancelBtn.style.display = 'grid'
+            actionBtn.style.display = 'grid'
             statusSpan.classList.add('in-transit')           
          }
          if(status == delivered){
@@ -177,7 +184,7 @@ function AddEventListeners(user){
 
 // Function to view a single order
 
-function viewOrder(){
+function viewOrder(user, mode){
     allOrdersDiv.innerHTML = ''
     ordersTitle.style.display = 'none';
     allOrdersDiv.style.marginTop = '50px';
@@ -207,7 +214,7 @@ function viewOrder(){
     </div>
     <div id="dest-location" class="detail">
         <span class="label">Destination Location:</span>
-        <span class="content"><input id="dest-input" type="text" value="3-5334-533"><span><span id="save-btn" class="invincible">Save</span></span></span>
+        <span class="content"><input id="dest-input" class="edit-input" type="text" value="3-5334-533"><span><span id="save-btn" class="invincible">Save</span></span></span>
     </div>
     </div>`
     var inputDiv = singleOrder.querySelector('#dest-input');
