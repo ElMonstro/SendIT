@@ -442,7 +442,7 @@ form{
 
 /* Order Details */
 
-#single-order{
+.single-order{
     display: grid;
     grid-template-rows: repeat(7, 1fr);
     justify-content: center;
@@ -454,8 +454,11 @@ form{
 
 .detail{
     display: grid;
-    grid-template-columns: 1fr 1fr;    
+    grid-template-columns: 1fr 1fr;
+}
 
+.view-mode .detail{
+    padding: 8% 0 8% 0;
 }
 
 .dest-input{
@@ -464,7 +467,7 @@ form{
     
 }
 
-#dest-location input[type=text] {
+#single-order input[type=text] {
     appearance: none;
     -moz-appearance: none;
     -webkit-appearance: none;
@@ -478,7 +481,7 @@ form{
     }
 
 #dest-location .label{
-    padding-top: 15px;
+    padding-top: 0px;
 }
 
 #dest-location .content{
@@ -573,4 +576,7 @@ form{
     
 }
 
+.edit-input-label{
+     margin-top: 5%;
+}
 
