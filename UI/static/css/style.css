@@ -496,7 +496,7 @@ form{
 .save-btn{
     margin-left: 10%;
     background-color: rgb(30, 170, 72);
-    padding: 14px;
+    padding: 10px;
     border-radius: 5px;
     color: #fff;
     cursor: pointer;
@@ -582,5 +582,9 @@ form{
 
 .edit-input-label{
      margin-top: 5%;
+}
+
+.edit-mode{
+    margin-left: 10%;
 }
 
