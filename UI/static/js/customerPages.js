@@ -203,7 +203,7 @@ function viewOrder(user, mode) {
 
     var destLocationHtml = '<span id="">3-5334-533</span>';
     var currentLocationHtml = '<span class="content">Mai Mahiu</span>';
-    var statusHtml = '<span id="stts-color" class="in-transit">In-transit</span>';
+    var statusHtml = '<span><span id="stts-color" class="in-transit">In-transit</span></span>';
     var editModeInputLabel = '';
     var editModeInputLabelAdmin = '';
 
@@ -238,7 +238,7 @@ function viewOrder(user, mode) {
 
     // Both edit and view mode and both users 
     singleOrder.innerHTML =
-        `<span class="heading">Order Number: <span id="order-no">435</span><span class="edit-button">Edit</span></span>
+        `<span class="heading">Order Number: <span id="order-no">435</span><span class="edit-button invincible">Edit</span></span>
     <div id="delivery-stts" class="detail">
         <span class="label">Delivery status:</span>
         <span class="content split">${statusHtml}<span><span id="status" class="save-btn invincible">Save</span></span></span>
@@ -265,14 +265,39 @@ function viewOrder(user, mode) {
     </div>
     </div>`
     
+    const editButton = singleOrder.querySelector('.edit-button');
+    const statusText = singleOrder.querySelector('#stts-color').innerHTML
+    
+    // If the parcel hasnt been delivered
+    if(statusText == inTransit){
+        editButton.style.display = 'inline'
+    }
+
+    if (mode == edit){
+        editButton.style.display = 'none';
+    }
+
+    if (pageTitle == 'Admin Dashboard'){
+         editButton.addEventListener('click', ()=>{
+        viewOrder(admin, edit);
+    });
+    }else{
+        editButton.addEventListener('click', ()=>{
+            viewOrder(client, edit)
+    });
+    }
+   
     
     // Client edit mode
     if (mode == edit && user == client) {
-        // Get elementd
+        // Get elements
         const destInputDiv = singleOrder.querySelector('#dest-input');
         const saveDestBtn = singleOrder.querySelector('#dest-loc');
 
-        // Add event listeners
+
+    
+
+        // Add event listeners       
         destInputDiv.addEventListener('input', () => {
             saveDestBtn.style.display = 'grid';
         });
