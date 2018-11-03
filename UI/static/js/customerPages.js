@@ -211,6 +211,10 @@ function viewOrder(user, mode) {
         singleOrder.classList.add('view-mode')
     }
 
+    if (mode == edit) {
+        singleOrder.classList.add('edit-mode');
+    }
+
     // Client view mode
     if (mode == edit && user == client) {
         editModeInputLabel = 'edit-input-label'
@@ -299,11 +303,12 @@ function viewOrder(user, mode) {
 // Listen to DOMContentLoaded event
 
 document.addEventListener('DOMContentLoaded', () => {
-    DisplayOrders(admin, all);
     if (pageTitle == 'Admin Dashboard') {
         AddEventListeners(admin);
+        DisplayOrders(admin, all);
     } else {
         AddEventListeners(client);
+        DisplayOrders(client, all);
     }
 
 
