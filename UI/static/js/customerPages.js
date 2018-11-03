@@ -66,7 +66,7 @@ function isEmpty(dict) {
 function DisplayOrders(user, option) {
     currentOption = option;
     allOrdersDiv.innerHTML = '';
-    var actionButton = '<span class="action-btn cancel-btn"><img src="static/img/cancel.png"></span>'
+    var actionButton = '<span class="action-btn cancel-btn">Cancel</span>'
     if (user == admin) {
         allOrders = allOrdersAdmin;
         actionButton = '<span class="action-btn edit-btn" >Edit</span>'
