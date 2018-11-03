@@ -484,7 +484,7 @@ form{
     padding-top: 0px;
 }
 
-#dest-location .content{
+.split{
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
@@ -493,7 +493,7 @@ form{
     color: rgb(92, 91, 110);
 }
 
-#save-btn{
+.save-btn{
     margin-left: 10%;
     background-color: rgb(30, 170, 72);
     padding: 14px;
