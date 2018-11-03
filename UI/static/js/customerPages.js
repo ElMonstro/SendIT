@@ -64,9 +64,11 @@ function isEmpty(dict) {
 
 // Function to display order from
 function DisplayOrders(user, option) {
+    allOrdersDiv.style.marginTop = '0px';
+    ordersTitle.style.display = 'grid';
     currentOption = option;
     allOrdersDiv.innerHTML = '';
-    var actionButton = '<span class="action-btn cancel-btn"><img src="static/img/cancel.png"></span>'
+    var actionButton = '<span class="action-btn cancel-btn">Cancel</span>'
     if (user == admin) {
         allOrders = allOrdersAdmin;
         actionButton = '<span class="action-btn edit-btn" >Edit</span>'
@@ -201,7 +203,7 @@ function viewOrder(user, mode) {
 
     var destLocationHtml = '<span id="">3-5334-533</span>';
     var currentLocationHtml = '<span class="content">Mai Mahiu</span>';
-    var statusHtml = '<span id="stts-color" class="in-transit">In-transit</span>';
+    var statusHtml = '<span><span id="stts-color" class="in-transit">In-transit</span></span>';
     var editModeInputLabel = '';
     var editModeInputLabelAdmin = '';
 
@@ -209,6 +211,10 @@ function viewOrder(user, mode) {
     // All view modes
     if (mode == view) {
         singleOrder.classList.add('view-mode')
+    }
+
+    if (mode == edit) {
+        singleOrder.classList.add('edit-mode');
     }
 
     // Client view mode
@@ -227,12 +233,13 @@ function viewOrder(user, mode) {
         <option value="intransit">In-transit</option>
         <option value="delivered">Delivered</option>
       </select></span></span> `;
+      singleOrder.classList.add('edit-mode');
 
     }
 
     // Both edit and view mode and both users 
     singleOrder.innerHTML =
-        `<span class="heading">Order Number: <span id="order-no">435</span></span>
+        `<span class="heading">Order Number: <span id="order-no">435</span><span class="edit-button invincible">Edit</span></span>
     <div id="delivery-stts" class="detail">
         <span class="label">Delivery status:</span>
         <span class="content split">${statusHtml}<span><span id="status" class="save-btn invincible">Save</span></span></span>
@@ -260,13 +267,37 @@ function viewOrder(user, mode) {
     </div>`
     
     
+
+    if (mode == view && pageTitle == 'Dashboard'){
+        const statusText = singleOrder.querySelector('#stts-color').innerHTML
+        const editButton = singleOrder.querySelector('.edit-button');
+
+        // If the parcel hasnt been delivered
+        if(statusText == inTransit){
+        editButton.style.display = 'inline'
+
+        editButton.addEventListener('click', ()=>{
+        viewOrder(client, edit);
+        });
+    }
+
+
+    if (mode == edit){
+        editButton.style.display = 'none';
+    }
+    }
+   
+    
     // Client edit mode
     if (mode == edit && user == client) {
-        // Get elementd
+        // Get elements
         const destInputDiv = singleOrder.querySelector('#dest-input');
         const saveDestBtn = singleOrder.querySelector('#dest-loc');
 
-        // Add event listeners
+
+    
+
+        // Add event listeners       
         destInputDiv.addEventListener('input', () => {
             saveDestBtn.style.display = 'grid';
         });
@@ -299,11 +330,12 @@ function viewOrder(user, mode) {
 // Listen to DOMContentLoaded event
 
 document.addEventListener('DOMContentLoaded', () => {
-    DisplayOrders(admin, all);
     if (pageTitle == 'Admin Dashboard') {
         AddEventListeners(admin);
+        DisplayOrders(admin, all);
     } else {
         AddEventListeners(client);
+        DisplayOrders(client, all);
     }
 
 

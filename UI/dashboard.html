@@ -14,7 +14,7 @@
                 <div class="logo"><img src="static/img/logo.svg" alt=""></div>
                 <div class="name"><span>SendIT</span></div>
             </div>
-            <div class="new-order"><span><img src="static/img/add.svg" alt=""></span> <span class="txt">New Order</span>
+            <div id="new-order"><a class="create-order"href="create-order.html"><span><img src="static/img/add.svg" alt=""></span><a class="create-order"href="create-order.html"><span class="txt">New Order</span></a>
             </div>
             <div class="option" id="all">
                 <span class="icon"><img src="static/img/choices.svg" alt=""></span>
@@ -51,8 +51,9 @@
                 <div id="title">
                     <div class="heading"><span>All your parcel Orders</span></div>
                     <div class="order-statistics">
-                        <div id="delivered-orders"><span id="dlvd">Delivered </span><span> 46</span></div>
-                        <div id="undelivered-orders"><span id="trst">In Transit </span><span>5</span></div>
+                        <div id="delivered-orders"><span class="delivered stat" id="dlvd">Delivered </span><span> 46</span></div>
+                        <div id="undelivered-orders"><span class="in-transit stat" id="trst">In Transit </span><span>5</span></div>
+                        <div id="cancelled-orders"><span class="canceled stat" id="cncld">Canceled </span><span>8</span></div>
                     </div>
                     <div class="titles">
                         <span class="order-no">Order #</span>
