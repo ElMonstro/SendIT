@@ -568,9 +568,10 @@ form{
     display: none; 
 }
 
-.edit-btn:hover{
+.edit-btn:hover, .edit-button:hover{
     background-color: blue;
     color: #fff;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); 
 }
 
 .action-btn{
@@ -579,7 +580,8 @@ form{
     cursor: pointer;
     display: none;
     padding: 4px;
-    border-radius: 4px
+    border-radius: 4px;
+    
 }
 
 .action-btn:hover{
@@ -595,3 +597,15 @@ form{
     margin-left: 10%;
 }
 
+.edit-button{
+    color: blue;
+    border: 1px solid blue;
+    float: right;
+    padding: 2px 6px 2px 6px;
+    border-radius: 4px;
+    font-weight: 100;
+    cursor: pointer;
+    
+
+    
+}
