@@ -387,7 +387,7 @@ form{
     grid-template-columns: 1fr;
     grid-row-gap: 1px;
     padding: 0 2px 1px 2px ;
-    background-color: #fff;
+
     border-radius: 5px;
     box-shadow: 0px 3px 5px rgba(100, 100, 100, 0.49);
     
@@ -448,6 +448,7 @@ form{
 .delivered{
     background-color: rgb(30, 170, 72)
 }
+
 
 /* Order Details */
 
@@ -596,7 +597,7 @@ form{
 }
 
 .edit-mode{
-    margin-left: 10%;
+    padding-left: 10%;
 }
 
 .edit-button{
