@@ -1,7 +1,9 @@
 // Elements
 const registerBtn = document.querySelector('#register-btn');
+const loginBtn = document.querySelector('#login-btn');
 
-const url = 'https://pacific-harbor-80743.herokuapp.com/api/v2/auth/signup'
+const registerUrl = 'https://pacific-harbor-80743.herokuapp.com/api/v2/auth/signup'
+const loginUrl = 'https://pacific-harbor-80743.herokuapp.com/api/v2/auth/login'
 
 function pswdValidator(){
     pass1 = document.querySelector('#reg-pass').value;
@@ -24,7 +26,7 @@ function register(e){
         console.log('passwords dont match')
     }
 
-    fetch(url, {
+    fetch(registerUrl, {
         method: 'POST',
         headers: {
             'Accept': 'application/json, text/plain, */*',
@@ -35,17 +37,50 @@ function register(e){
     })
     .then((res) => {
         if (res.status == 200){
-            window.location.href = 'login.html'
+            window.location.href = 'login.html';
             
         }
-        res.json().then((data)=> console.log(data))
+        res.json().then((data)=> console.log(data));
     })
     
-    .catch((error) => console.log(error))
+    .catch((error) => console.log(error));
 }
 
-// add event listener to register button
-registerBtn.addEventListener('click', register)
+function login(e){
+    e.preventDefault();
+    let username = document.querySelector('#login-username').value;
+    let password = document.querySelector('#login-pswd').value;
+
+    fetch(loginUrl, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({username: username, password:  password})
+
+    })
+    .then((res) => {
+        if (res.status == 200){
+            window.location.href = 'dashboard.html';
+            
+        }
+        res.json().then((data)=> console.log(data));
+    })
+    
+    .catch((error) => console.log(error));
+}
+
+pageTitle = document.querySelector('title').innerText;
+
+// add event listener to submit buttons
+if (pageTitle == 'Register'){
+    registerBtn.addEventListener('click', register)
+    
+} else if(pageTitle == 'Login'){
+    loginBtn.addEventListener('click', login);
+}
+
 
 
 
