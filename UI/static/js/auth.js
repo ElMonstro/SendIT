@@ -62,10 +62,19 @@ function login(e){
     })
     .then((res) => {
         if (res.status == 200){
-            window.location.href = 'dashboard.html';
-            
+            res.json().then((data)=> {
+                id = data['user_id'];
+                is_admin = data['is_admin']
+                if (!is_admin){
+                    window.location.href = 'dashboard.html?id=' + id.toString() + '&token=' + data['token'];
+                }else{
+                    window.location.href = 'admin-dashboard.html?id=' + id.toString() + '&token=' + data['token'];
+                }
+               
+            });
+        
         }
-        res.json().then((data)=> console.log(data));
+        
     })
     
     .catch((error) => console.log(error));
