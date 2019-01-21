@@ -32,32 +32,12 @@ const adminCanceledOption = document.querySelector('#admin-cancel')
 const adminAllOption = document.querySelector('#admin-all')
 const adminDeliveredOption = document.querySelector('#admin-deliver')
 
-// Order containers
-var allOrders = {
-    321: ['4 5345 343', '4 5343 343', 5, 'In-transit'],
-    453: ['4 5435 324', '6 5356 353', 3, 'Delivered'],
-    133: ['5 6535 453', '8 5465 742', 6, 'Canceled'],
-    301: ['4 5345 343', '4 5343 343', 5, 'In-transit'],
-    353: ['4 5435 324', '6 5356 353', 3, 'Delivered'],
-    633: ['5 6535 453', '8 5465 742', 6, 'Canceled']
-}
+// Get passed variables
+var url = new URL(document.URL);
+let token = url.searchParams.get('token');
+let userId = url.searchParams.get('id');
 
-var allOrdersAdmin = {
-    321: ['4 5345 343', '4 5343 343', 5, 'In-transit'],
-    453: ['4 5435 324', '6 5356 353', 3, 'Delivered'],
-    133: ['5 6535 453', '8 5465 742', 6, 'Canceled'],
-    301: ['4 5345 343', '4 5343 343', 5, 'In-transit'],
-    353: ['4 5435 324', '6 5356 353', 3, 'Delivered'],
-    633: ['5 6535 453', '8 5465 742', 6, 'Canceled'],
-    365: ['4 5345 343', '4 5343 343', 5, 'In-transit'],
-    495: ['4 5435 324', '6 5356 353', 3, 'Delivered'],
-    127: ['5 6535 453', '8 5465 742', 6, 'Canceled'],
-    249: ['4 5345 343', '4 5343 343', 5, 'In-transit'],
-    132: ['4 5435 324', '6 5356 353', 3, 'Delivered'],
-    808: ['5 6535 453', '8 5465 742', 6, 'Canceled']
-}
-
-// Fuction to check if tray is empty
+// Fuction to check if an object is empty
 function isEmpty(dict) {
     return Object.getOwnPropertyNames(dict) == 0;
 }
@@ -68,66 +48,91 @@ function DisplayOrders(user, option) {
     ordersTitle.style.display = 'grid';
     currentOption = option;
     allOrdersDiv.innerHTML = '';
-    var actionButton = '<span class="action-btn cancel-btn">Cancel</span>'
+    let getOrdersUrl = 'https://pacific-harbor-80743.herokuapp.com/api/v2/users/' + userId.toString() + '/parcels';
+    var actionButton = '<span class="action-btn cancel-btn">Cancel</span>';
     if (user == admin) {
-        allOrders = allOrdersAdmin;
-        actionButton = '<span class="action-btn edit-btn" >Edit</span>'
+        actionButton = '<span class="action-btn edit-btn" >Edit</span>';
+        getOrdersUrl = 'https://pacific-harbor-80743.herokuapp.com/api/v2/parcels'; 
     }
-    for (var order in allOrders) {
-        var pickupAdd = allOrders[order][0];
-        var destAdd = allOrders[order][1];
-        var weight = allOrders[order][2];
-        var price = weight * pricePerKg;
-        var status = allOrders[order][3];
-        const orderDiv = document.createElement('div');
-        orderDiv.className = 'order';
-        orderDiv.innerHTML =
-            `<span class="order-id">${order}</span>
-        <span class="pickup">${pickupAdd}</span>
-        <span class="Destination">${destAdd}</span>
-        <span><span class="weight">${weight}</span> Kgs</span>
-        <span><span>Kshs</span> <span class="price"> ${price}</span></span>
-        <span class="statuses"><span class="status">${status}</span>${actionButton}</span></span>`;
+    // Fetch orders
+    fetch(getOrdersUrl, {
+        headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'token': token
+        }
+    } )
+    .then((res) => {
+        if (res.status == 404){
+            res.json()
+            .then((data) => {                
+            console.log(data.message)
+            }) 
+        } else if (res.status == 200){
+                res.json().then((data) => {
+                loopThroughOrders(data.orders)
+                })            
+        }
+    })
+    .catch((err) => console.log(err)) 
 
-
-        var orderId = orderDiv.querySelector('.order-id');
-        orderDiv.addEventListener('click', (e) => {
-            if(e.target.classList.contains('edit-btn')){
-                viewOrder(user, edit);
-            }else{
-                viewOrder(user, view);
+    //Loop through orders and display them
+    function loopThroughOrders(allOrders){
+        for (var index in allOrders) {
+            var order = allOrders[index];
+            var orderId = order.order_id;
+            var pickupAdd = order.pickup;
+            var destAdd = order.dest;
+            var weight = order.weight;
+            var price = weight * pricePerKg;
+            var status = order.status;
+            const orderDiv = document.createElement('div');
+            orderDiv.className = 'order';
+            orderDiv.innerHTML =
+                `<span class="order-id">${orderId}</span>
+                <span class="pickup">${pickupAdd}</span>
+                <span class="Destination">${destAdd}</span>
+                <span><span class="weight">${weight}</span> Kgs</span>
+                <span><span>Kshs</span> <span class="price"> ${price}</span></span>
+                <span class="statuses"><span class="status">${status}</span>${actionButton}</span></span>`;
+    
+    
+            orderDiv.addEventListener('click', (e) => {
+                if(e.target.classList.contains('edit-btn')){
+                    viewOrder(user, edit);
+                }else{
+                    viewOrder(user, view);
+                }
+            });
+    
+            const statusSpan = orderDiv.querySelector('.status');
+            const actionBtn = orderDiv.querySelector('.action-btn');
+    
+            actionBtn.addEventListener('click',
+                () => {
+                    console.log('edited')
+                })
+    
+            // Display different colors for different status
+            if (status == canceled) {
+                statusSpan.classList.add('canceled')
             }
-        });
-
-        const statusSpan = orderDiv.querySelector('.status');
-        const actionBtn = orderDiv.querySelector('.action-btn');
-
-        actionBtn.addEventListener('click',
-            () => {
-                console.log('edited')
-            })
-
-        // Display different colors for different status
-        if (status == canceled) {
-            statusSpan.classList.add('canceled')
+            if (status == inTransit) {
+                actionBtn.style.display = 'grid'
+                statusSpan.classList.add('in-transit')
+            }
+            if (status == delivered) {
+                statusSpan.classList.add('delivered')
+            }
+            
+            // Filter viewed orders
+            if (option == all) {
+                allOrdersDiv.appendChild(orderDiv);
+            }
+            if (status == option) {
+                allOrdersDiv.appendChild(orderDiv);
+            }
+    
         }
-        if (status == inTransit) {
-            actionBtn.style.display = 'grid'
-            statusSpan.classList.add('in-transit')
-        }
-        if (status == delivered) {
-            statusSpan.classList.add('delivered')
-        }
-
-        if (option == all) {
-            allOrdersDiv.appendChild(orderDiv);
-        }
-        if (status == option) {
-            allOrdersDiv.appendChild(orderDiv);
-        }
-
-
-
     }
 
 }
