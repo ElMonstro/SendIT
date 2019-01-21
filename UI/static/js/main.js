@@ -97,11 +97,16 @@ function DisplayOrders(user, option) {
     
     
             orderDiv.addEventListener('click', (e) => {
+                var clickedOrder = e.target.parentNode.querySelector('.order-id')
+                if (clickedOrder){
+                    var clickedOrderId = clickedOrder.innerHTML               
+
                 if(e.target.classList.contains('edit-btn')){
-                    viewOrder(user, edit);
+                    //viewOrder(user, edit);
                 }else{
-                    viewOrder(user, view);
+                    //viewOrder(user, view);
                 }
+            }
             });
     
             const statusSpan = orderDiv.querySelector('.status');
@@ -198,7 +203,7 @@ function AddEventListeners(user) {
 
 // Function to view a single order
 
-function viewOrder(user, mode) {
+function viewOrder(user, mode, orderId) {
     allOrdersDiv.innerHTML = ''
     ordersTitle.style.display = 'none';
     allOrdersDiv.style.marginTop = '50px';
