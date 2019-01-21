@@ -102,9 +102,9 @@ function DisplayOrders(user, option) {
                     var clickedOrderId = clickedOrder.innerHTML               
 
                 if(e.target.classList.contains('edit-btn')){
-                    //viewOrder(user, edit);
+                    viewOrder(user, edit, clickedOrderId);
                 }else{
-                    //viewOrder(user, view);
+                    viewOrder(user, view, clickedOrderId);
                 }
             }
             });
@@ -210,7 +210,7 @@ function viewOrder(user, mode, orderId) {
     const singleOrder = document.createElement('div');
     singleOrder.id = 'single-order';
     singleOrder.className = 'single-order'
-    orderUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/parcels/${orderId}`
+    var orderUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/parcels/${orderId}`
 
     fetch(orderUrl, {
         headers: {
@@ -220,12 +220,14 @@ function viewOrder(user, mode, orderId) {
     } )
     .then((resp) => resp.json())
     .then((data) => {
-        order = data.order;
+        var order = data.order;
+        display(order);
 
     })
 
     // Function to display order
     function display(order){
+        console.log(order)
         // Order details
         var dest = order.dest;
         var currentLocation = order.curr_loc;
@@ -235,7 +237,7 @@ function viewOrder(user, mode, orderId) {
         var orderId = order.order_id;
         var recepientName = order.recepient_name;
         var userId = order.userId;
-        var receipientNo = order.receipient_no;
+        var receipientNo = order.recepient_no;
 
         var destLocationHtml = `<span id="">${dest}</span>`;
         var currentLocationHtml = `<span class="content">${currentLocation}</span>`;
@@ -313,7 +315,7 @@ function viewOrder(user, mode, orderId) {
             editButton.style.display = 'inline'
     
             editButton.addEventListener('click', ()=>{
-            viewOrder(client, edit);
+            viewOrder(client, edit, orderId);
             });
         }
     
