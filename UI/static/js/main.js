@@ -21,12 +21,13 @@ var currentOption = all;
 const ordersTitle = document.querySelector('#title')
 const orderStatistics = document.querySelector('.order-statistics');
 const pageTitle = document.querySelector('title').innerText
+const createOrderBtn = document.querySelector('#new-order')
 
 const transitOption = document.querySelector('#transit')
 const canceledOption = document.querySelector('#cancel')
 const allOption = document.querySelector('#all')
 const deliveredOption = document.querySelector('#deliver')
-
+// Admin dashboard elements
 const adminTransitOption = document.querySelector('#admin-transit')
 const adminCanceledOption = document.querySelector('#admin-cancel')
 const adminAllOption = document.querySelector('#admin-all')
@@ -150,6 +151,9 @@ function AddEventListeners(user) {
 
     if (user == client) {
         // Client dashboard options
+        createOrderBtn.addEventListener('click', () => {
+            window.location.href = 'create-order.html?token=' + token
+        })
         transitOption.addEventListener('click', () => {
             DisplayOrders(client, inTransit)
         });
