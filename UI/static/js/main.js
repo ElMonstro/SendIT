@@ -52,7 +52,7 @@ function DisplayOrders(user, option) {
     let getOrdersUrl = 'https://pacific-harbor-80743.herokuapp.com/api/v2/users/' + userId.toString() + '/parcels';
     var actionButton = '<span class="action-btn cancel-btn">Cancel</span>';
     if (user == admin) {
-        actionButton = '<span class="action-btn edit-btn" >Edit</span>';
+        actionButton = '<span class="action-btn" >Edit</span>';
         getOrdersUrl = 'https://pacific-harbor-80743.herokuapp.com/api/v2/parcels'; 
     }
     // Fetch orders
@@ -123,7 +123,9 @@ function DisplayOrders(user, option) {
                 statusSpan.classList.add('canceled')
             }
             if (status == inTransit) {
-                actionBtn.style.display = 'grid'
+                if (user==client){
+                    actionBtn.style.display = 'grid'
+                }
                 statusSpan.classList.add('in-transit')
             }
             if (status == delivered) {
@@ -231,7 +233,6 @@ function viewOrder(user, mode, orderId) {
 
     // Function to display order
     function display(order){
-        console.log(order)
         // Order details
         var dest = order.dest;
         var currentLocation = order.curr_loc;
@@ -254,31 +255,29 @@ function viewOrder(user, mode, orderId) {
         if (mode == view) {
             singleOrder.classList.add('view-mode')
         }
-    
+        // Edit mode
         if (mode == edit) {
+            // Client edit mode
             singleOrder.classList.add('edit-mode');
-        }
-    
-        // Client edit mode
-        if (mode == edit && user == client) {
-            editModeInputLabel = 'edit-input-label'
-            destLocationHtml = `<input id="dest-input" class="edit-input" type="text" value="${dest}">`;
-        }
+            if(user == client){
+                editModeInputLabel = 'edit-input-label'
+                destLocationHtml = `<input id="dest-input" class="edit-input" type="text" value="${dest}">`;
+            }
+            // Admin edit mode
+            if(user == admin){
+                editModeInputLabelAdmin = 'edit-input-label'
+                singleOrder.id = 'admin-single-order';
+                singleOrder.className = 'single-order'
+                currentLocationHtml = `<input id="curr-loc-input" class="edit-input" type="text" value="${currentLocation}">`;
+                statusHtml = ` <span><span><select id="status-select">
+                <option value="intransit">In-transit</option>
+                <option value="delivered">Delivered</option>
+                </select></span></span> `;
+                singleOrder.classList.add('edit-mode');
+                }
+
+        } 
         
-        // Admin view mode
-        if (mode == edit && user == admin) {
-            editModeInputLabelAdmin = 'edit-input-label'
-            singleOrder.id = 'admin-single-order';
-            singleOrder.className = 'single-order'
-            currentLocationHtml = `<input id="curr-loc-input" class="edit-input" type="text" value="${currentLocation}">`;
-            statusHtml = ` <span><span><select id="status-select">
-            <option value="intransit">In-transit</option>
-            <option value="delivered">Delivered</option>
-          </select></span></span> `;
-          singleOrder.classList.add('edit-mode');
-    
-        }
-    
         // Both edit and view mode and both users 
         singleOrder.innerHTML =
             `<span class="heading">Order Number: <span id="order-no">${orderId}</span><span class="edit-button invincible">Edit</span></span>
@@ -308,65 +307,98 @@ function viewOrder(user, mode, orderId) {
         </div>
         </div>`
         
-        
-    
-        if (mode == view && pageTitle == 'Dashboard'){
-            const statusText = singleOrder.querySelector('#stts-color').innerHTML
-            const editButton = singleOrder.querySelector('.edit-button');
-    
+        const editButton = singleOrder.querySelector('.edit-button'); 
+        const saveCurrLocationBtn = singleOrder.querySelector('#save-curr-loc');
+       
+        // View mode
+        if (mode == view){
+            const statusText = singleOrder.querySelector('#stts-color').innerHTML    
             // If the parcel hasnt been delivered
             if(statusText == inTransit){
-            editButton.style.display = 'inline'
-    
-            editButton.addEventListener('click', ()=>{
-            viewOrder(client, edit, orderId);
-            });
-        }
-    
-    
-        if (mode == edit){
-            editButton.style.display = 'none';
+            editButton.style.display = 'inline';
+
+            if (pageTitle == 'Dashboard'){
+                editButton.addEventListener('click', ()=>{
+                    viewOrder(client, edit, orderId);
+                    });
+            } else if(pageTitle == 'Admin Dashboard'){
+                editButton.addEventListener('click', ()=>{
+                    viewOrder(admin, edit, orderId);
+                    });
+            }
         }
         }
        
         
-        // Client edit mode
-        if (mode == edit && user == client) {
-            // Get elements
-            const destInputDiv = singleOrder.querySelector('#dest-input');
-            const saveDestBtn = singleOrder.querySelector('#dest-loc');
-    
-    
+        // edit mode
+        if (mode == edit) {
+            // Client edit mode
+            if(user == client){
+                // Get elements
+                const destInputDiv = singleOrder.querySelector('#dest-input');
+                const saveDestBtn = singleOrder.querySelector('#dest-loc');        
         
-    
-            // Add event listeners       
-            destInputDiv.addEventListener('input', () => {
-                saveDestBtn.style.display = 'grid';
-            });
+                // Add event listeners       
+                destInputDiv.addEventListener('input', () => {
+                    saveDestBtn.style.display = 'grid';
+                });
+            }
+        
+            if (user == admin){
+                // Get elements
+                const statusSelector = singleOrder.querySelector('#status-select');
+                const currLocationInput = singleOrder.querySelector('#curr-loc-input');
+                const saveStatusBtn = singleOrder.querySelector('#status');
+                const saveCurrLocation = singleOrder.querySelector('#save-curr-loc')
+        
+                // Add event listeners
+                statusSelector.addEventListener('change', ()=>{
+                    saveStatusBtn.style.display = 'grid'            
+                });        
+                currLocationInput.addEventListener('input', ()=>{
+                    saveCurrLocation.style.display = 'grid';
+                });
+
+                saveCurrLocationBtn.addEventListener('click', () => {
+                    var currentLoc = currLocationInput.value;
+                    saveLocation(user, currentLoc, orderId);
+                })
+        
+            }
+            
         }
-    
-        // Admin edit mode
-        if(mode == edit && user == admin){
-            // Get elements
-            const statusSelector = singleOrder.querySelector('#status-select');
-            const currLocationInput = singleOrder.querySelector('#curr-loc-input');
-            const saveStatusBtn = singleOrder.querySelector('#status');
-            const saveCurrLocation = singleOrder.querySelector('#save-curr-loc')
-    
-            // Add event listeners
-            statusSelector.addEventListener('change', ()=>{
-                saveStatusBtn.style.display = 'grid'            
-            });
-    
-            currLocationInput.addEventListener('input', ()=>{
-                saveCurrLocation.style.display = 'grid';
-            });
-    
-    
-        }
+
+        // Add created element to DOM
         allOrdersDiv.appendChild(singleOrder);
     }
 
+}
+
+
+function saveLocation(user, location, order_id){
+    var saveLocationUrl = '';
+    var keys = {admin:'curr_location', 
+    client: 'dest_location'}
+    if (user == admin){
+        saveLocationUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/parcels/${order_id}/PresentLocation`;
+        var payload = {curr_location: location}
+     }else{
+        saveLocationUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/parcels/${order_id}/destination`;
+        var payload = {dest_location: location}
+     }     
+     // Make request
+     fetch(saveLocationUrl, {
+        method: 'PUT',
+        headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-type': 'application/json',
+        'token': token
+        },
+        body: JSON.stringify(payload)
+    })
+    .then((resp) => resp.json())
+    .then((data) => console.log(data.message))
+    .catch((error) => console.log(error))
 }
 
 
