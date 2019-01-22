@@ -307,7 +307,9 @@ function viewOrder(user, mode, orderId) {
         </div>
         </div>`
         
-        const editButton = singleOrder.querySelector('.edit-button');
+        const editButton = singleOrder.querySelector('.edit-button'); 
+        const saveCurrLocationBtn = singleOrder.querySelector('#save-curr-loc');
+       
         // View mode
         if (mode == view){
             const statusText = singleOrder.querySelector('#stts-color').innerHTML    
@@ -341,7 +343,7 @@ function viewOrder(user, mode, orderId) {
                     saveDestBtn.style.display = 'grid';
                 });
             }
-            // Admin edit mode
+        
             if (user == admin){
                 // Get elements
                 const statusSelector = singleOrder.querySelector('#status-select');
@@ -352,11 +354,16 @@ function viewOrder(user, mode, orderId) {
                 // Add event listeners
                 statusSelector.addEventListener('change', ()=>{
                     saveStatusBtn.style.display = 'grid'            
-                });
-        
+                });        
                 currLocationInput.addEventListener('input', ()=>{
                     saveCurrLocation.style.display = 'grid';
                 });
+
+                saveCurrLocationBtn.addEventListener('click', () => {
+                    var currentLoc = currLocationInput.value;
+                    saveLocation(user, currentLoc, orderId);
+                })
+        
             }
             
         }
@@ -365,6 +372,33 @@ function viewOrder(user, mode, orderId) {
         allOrdersDiv.appendChild(singleOrder);
     }
 
+}
+
+
+function saveLocation(user, location, order_id){
+    var saveLocationUrl = '';
+    var keys = {admin:'curr_location', 
+    client: 'dest_location'}
+    if (user == admin){
+        saveLocationUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/parcels/${order_id}/PresentLocation`;
+        var payload = {curr_location: location}
+     }else{
+        saveLocationUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/parcels/${order_id}/destination`;
+        var payload = {dest_location: location}
+     }     
+     // Make request
+     fetch(saveLocationUrl, {
+        method: 'PUT',
+        headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-type': 'application/json',
+        'token': token
+        },
+        body: JSON.stringify(payload)
+    })
+    .then((resp) => resp.json())
+    .then((data) => console.log(data.message))
+    .catch((error) => console.log(error))
 }
 
 
