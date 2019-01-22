@@ -254,30 +254,31 @@ function viewOrder(user, mode, orderId) {
         if (mode == view) {
             singleOrder.classList.add('view-mode')
         }
-    
+        // Edit mode
         if (mode == edit) {
+            // Client edit mode
             singleOrder.classList.add('edit-mode');
+            if(user == client){
+                editModeInputLabel = 'edit-input-label'
+                destLocationHtml = `<input id="dest-input" class="edit-input" type="text" value="${dest}">`;
+            }
+            // Admin edit mode
+            if(user == admin){
+                editModeInputLabelAdmin = 'edit-input-label'
+                singleOrder.id = 'admin-single-order';
+                singleOrder.className = 'single-order'
+                currentLocationHtml = `<input id="curr-loc-input" class="edit-input" type="text" value="${currentLocation}">`;
+                statusHtml = ` <span><span><select id="status-select">
+                <option value="intransit">In-transit</option>
+                <option value="delivered">Delivered</option>
+                </select></span></span> `;
+                singleOrder.classList.add('edit-mode');
+                }
+
         }
     
-        // Client edit mode
-        if (mode == edit && user == client) {
-            editModeInputLabel = 'edit-input-label'
-            destLocationHtml = `<input id="dest-input" class="edit-input" type="text" value="${dest}">`;
-        }
         
-        // Admin view mode
-        if (mode == edit && user == admin) {
-            editModeInputLabelAdmin = 'edit-input-label'
-            singleOrder.id = 'admin-single-order';
-            singleOrder.className = 'single-order'
-            currentLocationHtml = `<input id="curr-loc-input" class="edit-input" type="text" value="${currentLocation}">`;
-            statusHtml = ` <span><span><select id="status-select">
-            <option value="intransit">In-transit</option>
-            <option value="delivered">Delivered</option>
-          </select></span></span> `;
-          singleOrder.classList.add('edit-mode');
-    
-        }
+        
     
         // Both edit and view mode and both users 
         singleOrder.innerHTML =
@@ -309,7 +310,7 @@ function viewOrder(user, mode, orderId) {
         </div>`
         
         const editButton = singleOrder.querySelector('.edit-button');
-        
+        // View mode
         if (mode == view){
             const statusText = singleOrder.querySelector('#stts-color').innerHTML    
             // If the parcel hasnt been delivered
@@ -329,37 +330,40 @@ function viewOrder(user, mode, orderId) {
         }
        
         
-        // Client edit mode
-        if (mode == edit && user == client) {
-            // Get elements
-            const destInputDiv = singleOrder.querySelector('#dest-input');
-            const saveDestBtn = singleOrder.querySelector('#dest-loc');        
-    
-            // Add event listeners       
-            destInputDiv.addEventListener('input', () => {
-                saveDestBtn.style.display = 'grid';
-            });
+        // edit mode
+        if (mode == edit) {
+            // Client edit mode
+            if(user == client){
+                // Get elements
+                const destInputDiv = singleOrder.querySelector('#dest-input');
+                const saveDestBtn = singleOrder.querySelector('#dest-loc');        
+        
+                // Add event listeners       
+                destInputDiv.addEventListener('input', () => {
+                    saveDestBtn.style.display = 'grid';
+                });
+            }
+            // Admin edit mode
+            if (user == admin){
+                // Get elements
+                const statusSelector = singleOrder.querySelector('#status-select');
+                const currLocationInput = singleOrder.querySelector('#curr-loc-input');
+                const saveStatusBtn = singleOrder.querySelector('#status');
+                const saveCurrLocation = singleOrder.querySelector('#save-curr-loc')
+        
+                // Add event listeners
+                statusSelector.addEventListener('change', ()=>{
+                    saveStatusBtn.style.display = 'grid'            
+                });
+        
+                currLocationInput.addEventListener('input', ()=>{
+                    saveCurrLocation.style.display = 'grid';
+                });
+            }
+            
         }
-    
-        // Admin edit mode
-        if(mode == edit && user == admin){
-            // Get elements
-            const statusSelector = singleOrder.querySelector('#status-select');
-            const currLocationInput = singleOrder.querySelector('#curr-loc-input');
-            const saveStatusBtn = singleOrder.querySelector('#status');
-            const saveCurrLocation = singleOrder.querySelector('#save-curr-loc')
-    
-            // Add event listeners
-            statusSelector.addEventListener('change', ()=>{
-                saveStatusBtn.style.display = 'grid'            
-            });
-    
-            currLocationInput.addEventListener('input', ()=>{
-                saveCurrLocation.style.display = 'grid';
-            });
-    
-    
-        }
+
+        // Add created element to DOM
         allOrdersDiv.appendChild(singleOrder);
     }
 
