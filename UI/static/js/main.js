@@ -152,7 +152,7 @@ function AddEventListeners(user) {
     if (user == client) {
         // Client dashboard options
         createOrderBtn.addEventListener('click', () => {
-            window.location.href = 'create-order.html?token=' + token
+            window.location.href = 'create-order.html?token=' + token + '&user_id=' + userId.toString();
         })
         transitOption.addEventListener('click', () => {
             DisplayOrders(client, inTransit)
