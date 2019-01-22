@@ -5,13 +5,18 @@ const pickupInput = document.querySelector('#pickup');
 const destInput = document.querySelector('#dest');
 const weightInput = document.querySelector('#weight')
 const createBtn = document.querySelector('#create-btn');
+const homeBtns = document.querySelectorAll('.home');
 
 // Get passed variables
 var url = new URL(document.URL);
-let token = url.searchParams.get('token');
+var token = url.searchParams.get('token');
+var id = url.searchParams.get('user_id');
 
-// Add event listener to create button
+// Add event listeners
 createBtn.addEventListener('click', createOrder)
+homeBtns.forEach((btn) => btn.addEventListener('click', () => {
+    window.location.href = 'dashboard.html?id=' + id.toString() + '&token=' + token;
+}))
 
 // Function to create parcel
 function createOrder(e){
