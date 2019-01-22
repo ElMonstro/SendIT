@@ -52,7 +52,7 @@ function DisplayOrders(user, option) {
     let getOrdersUrl = 'https://pacific-harbor-80743.herokuapp.com/api/v2/users/' + userId.toString() + '/parcels';
     var actionButton = '<span class="action-btn cancel-btn">Cancel</span>';
     if (user == admin) {
-        actionButton = '<span class="action-btn edit-btn" >Edit</span>';
+        actionButton = '<span class="action-btn" >Edit</span>';
         getOrdersUrl = 'https://pacific-harbor-80743.herokuapp.com/api/v2/parcels'; 
     }
     // Fetch orders
@@ -123,7 +123,9 @@ function DisplayOrders(user, option) {
                 statusSpan.classList.add('canceled')
             }
             if (status == inTransit) {
-                actionBtn.style.display = 'grid'
+                if (user==client){
+                    actionBtn.style.display = 'grid'
+                }
                 statusSpan.classList.add('in-transit')
             }
             if (status == delivered) {
@@ -231,7 +233,6 @@ function viewOrder(user, mode, orderId) {
 
     // Function to display order
     function display(order){
-        console.log(order)
         // Order details
         var dest = order.dest;
         var currentLocation = order.curr_loc;
@@ -275,11 +276,8 @@ function viewOrder(user, mode, orderId) {
                 singleOrder.classList.add('edit-mode');
                 }
 
-        }
-    
+        } 
         
-        
-    
         // Both edit and view mode and both users 
         singleOrder.innerHTML =
             `<span class="heading">Order Number: <span id="order-no">${orderId}</span><span class="edit-button invincible">Edit</span></span>
