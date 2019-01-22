@@ -308,24 +308,23 @@ function viewOrder(user, mode, orderId) {
         </div>
         </div>`
         
+        const editButton = singleOrder.querySelector('.edit-button');
         
-    
-        if (mode == view && pageTitle == 'Dashboard'){
-            const statusText = singleOrder.querySelector('#stts-color').innerHTML
-            const editButton = singleOrder.querySelector('.edit-button');
-    
+        if (mode == view){
+            const statusText = singleOrder.querySelector('#stts-color').innerHTML    
             // If the parcel hasnt been delivered
             if(statusText == inTransit){
-            editButton.style.display = 'inline'
-    
-            editButton.addEventListener('click', ()=>{
-            viewOrder(client, edit, orderId);
-            });
-        }
-    
-    
-        if (mode == edit){
-            editButton.style.display = 'none';
+            editButton.style.display = 'inline';
+
+            if (pageTitle == 'Dashboard'){
+                editButton.addEventListener('click', ()=>{
+                    viewOrder(client, edit, orderId);
+                    });
+            } else if(pageTitle == 'Admin Dashboard'){
+                editButton.addEventListener('click', ()=>{
+                    viewOrder(admin, edit, orderId);
+                    });
+            }
         }
         }
        
@@ -334,10 +333,7 @@ function viewOrder(user, mode, orderId) {
         if (mode == edit && user == client) {
             // Get elements
             const destInputDiv = singleOrder.querySelector('#dest-input');
-            const saveDestBtn = singleOrder.querySelector('#dest-loc');
-    
-    
-        
+            const saveDestBtn = singleOrder.querySelector('#dest-loc');        
     
             // Add event listeners       
             destInputDiv.addEventListener('input', () => {
