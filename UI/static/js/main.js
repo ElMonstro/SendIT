@@ -303,7 +303,7 @@ function viewOrder(user, mode, orderId) {
         </div>
         <div id="dest-location" class="detail">
             <span class="label ${editModeInputLabel}">Destination Location:</span>
-    <span class="content split">${destLocationHtml}<span><span id="dest-loc" class="save-btn invincible">Save</span></span></span>
+    <span class="content split">${destLocationHtml}<span><span id="save-dest-loc" class="save-btn invincible">Save</span></span></span>
         </div>
         </div>`
         
@@ -336,12 +336,18 @@ function viewOrder(user, mode, orderId) {
             if(user == client){
                 // Get elements
                 const destInputDiv = singleOrder.querySelector('#dest-input');
-                const saveDestBtn = singleOrder.querySelector('#dest-loc');        
+                const saveDestBtn = singleOrder.querySelector('#save-dest-loc');        
         
                 // Add event listeners       
                 destInputDiv.addEventListener('input', () => {
                     saveDestBtn.style.display = 'grid';
                 });
+                saveDestBtn.addEventListener('click', () => {
+                    var destLoc = destInputDiv.value;
+                    saveLocation(user, destLoc, orderId);
+                });
+
+
             }
         
             if (user == admin){
@@ -387,6 +393,7 @@ function saveLocation(user, location, order_id){
         var payload = {dest_location: location}
      }     
      // Make request
+     console.log(payload)
      fetch(saveLocationUrl, {
         method: 'PUT',
         headers: {
