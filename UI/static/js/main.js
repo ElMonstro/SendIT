@@ -400,9 +400,31 @@ function saveLocation(user, location, order_id){
     .catch((error) => console.log(error))
 }
 
+// Function to change order status
+function changeOrderStatus(user, orderId){
+    var changeStatusUrl;
+    if (user == admin){
+        changeStatusUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/parcels/${orderId}/deliver`;
+    }else if(user == client){
+        changeStatusUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/parcels/${orderId}/cancel`;
+    }
+
+    // Make request
+    fetch(changeStatusUrl, {
+        method: 'PUT',
+        headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-type': 'application/json',
+        'token': token
+        },
+    })
+    .then((resp) => resp.json())
+    .then((data) => console.log(data.message))
+    .catch((error) => console.log(error))    
+    
+}
 
 // Listen to DOMContentLoaded event
-
 document.addEventListener('DOMContentLoaded', () => {
     if (pageTitle == 'Admin Dashboard') {
         AddEventListeners(admin);
