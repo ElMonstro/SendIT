@@ -249,6 +249,8 @@ function viewOrder(user, mode, orderId) {
         var statusHtml = `<span><span id="stts-color" class="${status.toLowerCase()}">${status}</span></span>`;
         var editModeInputLabel = '';
         var editModeInputLabelAdmin = '';
+        var statusBtnId = '';
+        var statusAction = '';
     
         
         // All view modes
@@ -262,6 +264,8 @@ function viewOrder(user, mode, orderId) {
             if(user == client){
                 editModeInputLabel = 'edit-input-label'
                 destLocationHtml = `<input id="dest-input" class="edit-input" type="text" value="${dest}">`;
+                statusBtnId = 'cancel-btn';
+                statusAction = 'Cancel'
             }
             // Admin edit mode
             if(user == admin){
@@ -269,11 +273,9 @@ function viewOrder(user, mode, orderId) {
                 singleOrder.id = 'admin-single-order';
                 singleOrder.className = 'single-order'
                 currentLocationHtml = `<input id="curr-loc-input" class="edit-input" type="text" value="${currentLocation}">`;
-                statusHtml = ` <span><span><select id="status-select">
-                <option value="intransit">In-transit</option>
-                <option value="delivered">Delivered</option>
-                </select></span></span> `;
                 singleOrder.classList.add('edit-mode');
+                statusBtnId = 'deliver-btn';
+                statusAction = 'Deliver';
                 }
 
         } 
@@ -283,7 +285,7 @@ function viewOrder(user, mode, orderId) {
             `<span class="heading">Order Number: <span id="order-no">${orderId}</span><span class="edit-button invincible">Edit</span></span>
         <div id="delivery-stts" class="detail">
             <span class="label">Delivery status:</span>
-            <span class="content split">${statusHtml}<span><span id="status" class="save-btn invincible">Save</span></span></span>
+            <span class="content split">${statusHtml}<span><span id="${statusBtnId}" class="status-btn invincible">${statusAction}</span></span></span>
         </div>
         <div id="recpnt-name" class="detail">
             <span class="label">Recepient Name:</span>
@@ -352,23 +354,22 @@ function viewOrder(user, mode, orderId) {
         
             if (user == admin){
                 // Get elements
-                const statusSelector = singleOrder.querySelector('#status-select');
                 const currLocationInput = singleOrder.querySelector('#curr-loc-input');
-                const saveStatusBtn = singleOrder.querySelector('#status');
+                const deliverBtn = singleOrder.querySelector('#deliver-btn');
                 const saveCurrLocation = singleOrder.querySelector('#save-curr-loc')
-        
-                // Add event listeners
-                statusSelector.addEventListener('change', ()=>{
-                    saveStatusBtn.style.display = 'grid'            
-                });        
+                // show deliver button
+                deliverBtn.style.display = 'grid'
+                // Add event listeners       
                 currLocationInput.addEventListener('input', ()=>{
                     saveCurrLocation.style.display = 'grid';
                 });
-
                 saveCurrLocationBtn.addEventListener('click', () => {
                     var currentLoc = currLocationInput.value;
                     saveLocation(user, currentLoc, orderId);
-                })
+                });
+                deliverBtn.addEventListener('click', () => {
+                    changeOrderStatus(user, orderId);
+                });
         
             }
             
@@ -408,9 +409,38 @@ function saveLocation(user, location, order_id){
     .catch((error) => console.log(error))
 }
 
+// Function to change order status
+function changeOrderStatus(user, orderId){
+    var changeStatusUrl;
+    if (user == admin){
+        changeStatusUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/parcels/${orderId}/deliver`;
+    }else if(user == client){
+        changeStatusUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/parcels/${orderId}/cancel`;
+    }
+
+    // Make request
+    fetch(changeStatusUrl, {
+        method: 'PUT',
+        headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-type': 'application/json',
+        'token': token
+        },
+    })
+    .then((resp) => {
+        
+        if (resp.status == 200){
+            viewOrder(user, view, orderId);
+        }
+        resp.json()
+        .then(data => console.log(data.message))
+        
+    })
+    .catch((error) => console.log(error))    
+    
+}
 
 // Listen to DOMContentLoaded event
-
 document.addEventListener('DOMContentLoaded', () => {
     if (pageTitle == 'Admin Dashboard') {
         AddEventListeners(admin);
