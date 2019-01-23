@@ -357,11 +357,13 @@ function viewOrder(user, mode, orderId) {
                 currLocationInput.addEventListener('input', ()=>{
                     saveCurrLocation.style.display = 'grid';
                 });
-
                 saveCurrLocationBtn.addEventListener('click', () => {
                     var currentLoc = currLocationInput.value;
                     saveLocation(user, currentLoc, orderId);
-                })
+                });
+                deliverBtn.addEventListener('click', () => {
+                    changeOrderStatus(user, orderId);
+                });
         
             }
             
@@ -418,8 +420,15 @@ function changeOrderStatus(user, orderId){
         'token': token
         },
     })
-    .then((resp) => resp.json())
-    .then((data) => console.log(data.message))
+    .then((resp) => {
+        
+        if (resp.status == 200){
+            viewOrder(user, view, orderId);
+        }
+        resp.json()
+        .then(data => console.log(data.message))
+        
+    })
     .catch((error) => console.log(error))    
     
 }
