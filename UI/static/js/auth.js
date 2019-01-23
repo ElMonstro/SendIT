@@ -1,9 +1,14 @@
+
 // Elements
 const registerBtn = document.querySelector('#register-btn');
 const loginBtn = document.querySelector('#login-btn');
 
 const registerUrl = 'https://pacific-harbor-80743.herokuapp.com/api/v2/auth/signup'
 const loginUrl = 'https://pacific-harbor-80743.herokuapp.com/api/v2/auth/login'
+
+var success = 'success';
+var error = 'error';
+var plain = 'plain';
 
 function pswdValidator(){
     pass1 = document.querySelector('#reg-pass').value;
@@ -37,10 +42,17 @@ function register(e){
     })
     .then((res) => {
         if (res.status == 200){
-            window.location.href = 'login.html';
-            
+            res.json().then((data)=> {
+            });
+            window.location.href = 'login.html';       
+        } else{
+            res.json()
+            .then(data => {
+                showSnackbar(error, data.message);
+                console.log(data.message)
+            });
         }
-        res.json().then((data)=> console.log(data));
+        
     })
     
     .catch((error) => console.log(error));
@@ -80,7 +92,22 @@ function login(e){
     .catch((error) => console.log(error));
 }
 
-pageTitle = document.querySelector('title').innerText;
+var pageTitle = document.querySelector('title').innerText;
+var infoMsgDiv = document.querySelector('.info-msg');
+var infoMsgSpan = document.querySelector('.info');
+
+// Function to display snackbar
+function showSnackbar(infoType, message){
+    
+    infoMsgSpan.innerText = message;
+    infoMsgDiv.classList.add(infoType);
+    infoMsgDiv.classList.add('show');
+    setTimeout(() => { 
+        infoMsgDiv.className = infoMsgDiv.className.replace("show", ""); }, 5000
+        );
+    
+}
+
 
 // add event listener to submit buttons
 if (pageTitle == 'Register'){
@@ -89,6 +116,7 @@ if (pageTitle == 'Register'){
 } else if(pageTitle == 'Login'){
     loginBtn.addEventListener('click', login);
 }
+
 
 
 
