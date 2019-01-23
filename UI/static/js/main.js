@@ -94,16 +94,17 @@ function DisplayOrders(user, option) {
                 <span class="Destination">${destAdd}</span>
                 <span><span class="weight">${weight}</span> Kgs</span>
                 <span><span>Kshs</span> <span class="price"> ${price}</span></span>
-                <span class="statuses"><span class="status">${status}</span>${actionButton}</span></span>`;
+                <span class="statuses"><span class="status">${status}</span></span>`;
     
     
             orderDiv.addEventListener('click', (e) => {
                 var clickedOrder = e.target.parentNode.querySelector('.order-id')
+                var clickedOrderCancel = e.target.parentNode.parentNode.querySelector('.order-id')
                 if (clickedOrder){
                     var clickedOrderId = clickedOrder.innerHTML               
 
-                if(e.target.classList.contains('edit-btn')){
-                    viewOrder(user, edit, clickedOrderId);
+                if(e.target.classList.contains('cancel-btn')){
+                    changeOrderStatus(user, clickedOrderId);
                 }else{
                     viewOrder(user, view, clickedOrderId);
                 }
@@ -112,20 +113,12 @@ function DisplayOrders(user, option) {
     
             const statusSpan = orderDiv.querySelector('.status');
             const actionBtn = orderDiv.querySelector('.action-btn');
-    
-            actionBtn.addEventListener('click',
-                () => {
-                    console.log('edited')
-                })
-    
             // Display different colors for different status
             if (status == canceled) {
                 statusSpan.classList.add('canceled')
             }
             if (status == inTransit) {
-                if (user==client){
-                    actionBtn.style.display = 'grid'
-                }
+                
                 statusSpan.classList.add('in-transit')
             }
             if (status == delivered) {
@@ -338,8 +331,10 @@ function viewOrder(user, mode, orderId) {
             if(user == client){
                 // Get elements
                 const destInputDiv = singleOrder.querySelector('#dest-input');
-                const saveDestBtn = singleOrder.querySelector('#save-dest-loc');        
-        
+                const saveDestBtn = singleOrder.querySelector('#save-dest-loc'); 
+                const cancelBtn = singleOrder.querySelector('#cancel-btn');                  
+                //show cancel button
+                cancelBtn.style.display = 'grid';
                 // Add event listeners       
                 destInputDiv.addEventListener('input', () => {
                     saveDestBtn.style.display = 'grid';
@@ -347,6 +342,9 @@ function viewOrder(user, mode, orderId) {
                 saveDestBtn.addEventListener('click', () => {
                     var destLoc = destInputDiv.value;
                     saveLocation(user, destLoc, orderId);
+                });
+                cancelBtn.addEventListener('click', () => {
+                    changeOrderStatus(user, orderId);
                 });
 
 
