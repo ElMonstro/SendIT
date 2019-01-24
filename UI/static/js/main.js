@@ -77,7 +77,8 @@ function DisplayOrders(user, option) {
             }) 
         } else if (res.status == 200){
                 res.json().then((data) => {
-                loopThroughOrders(data.orders)
+                setStats(data.orders);
+                loopThroughOrders(data.orders);
                 })            
         }
     })
@@ -472,7 +473,7 @@ var allOrdersStatSpan = document.querySelector('#all-stat');
 function setStats(orders){
     var deliveredStat = 0;
     var canceledStat = 0;
-    var allStat = orders.length();
+    var allStat = orders.length;
     var inTransitStat = 0;
 
     orders.forEach(order => {
