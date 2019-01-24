@@ -6,6 +6,8 @@ var pwdInput = document.querySelector('#reg-pass');
 var confirmPwdInput = document.querySelector('#confirm-pass');
 var usernameInput = document.querySelector('#reg-username');
 var emailInput = document.querySelector('#reg-email');
+var loginUsernameInput = document.querySelector('#login-username');
+var loginPswd = document.querySelector('#login-pswd');
 
 const registerUrl = 'https://pacific-harbor-80743.herokuapp.com/api/v2/auth/signup'
 const loginUrl = 'https://pacific-harbor-80743.herokuapp.com/api/v2/auth/login'
@@ -20,6 +22,11 @@ var inputs = {
     username: usernameInput,
     email: emailInput,
 
+}
+
+var loginInputs = {
+    username: loginUsernameInput,
+    password: loginPswd
 }
 
 function pswdValidator(){
@@ -39,9 +46,7 @@ function register(e){
     var username = document.querySelector('#reg-username').value
     
 
-    if (isThereEmptyField(inputs)){
-        //
-    }else{
+    if (!isThereEmptyField(inputs)){
         if (pswdValidator()){
             // if there is no empty field and passwords match
             var password = document.querySelector('#reg-pass').value;
@@ -84,33 +89,42 @@ function login(e){
     let username = document.querySelector('#login-username').value;
     let password = document.querySelector('#login-pswd').value;
 
-    fetch(loginUrl, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json, text/plain, */*',
-            'Content-type': 'application/json'
-        },
-        body: JSON.stringify({username: username, password:  password})
+    if (!isThereEmptyField(loginInputs)){
+        makePost();
+    }
 
-    })
-    .then((res) => {
-        if (res.status == 200){
-            res.json().then((data)=> {
-                id = data['user_id'];
-                is_admin = data['is_admin']
-                if (!is_admin){
-                    window.location.href = 'dashboard.html?id=' + id.toString() + '&token=' + data['token'];
-                }else{
-                    window.location.href = 'admin-dashboard.html?id=' + id.toString() + '&token=' + data['token'];
-                }
-               
-            });
-        
-        }
-        
-    })
+    function makePost(){
+        fetch(loginUrl, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({username: username, password:  password})
     
-    .catch((error) => console.log(error));
+        })
+        .then((res) => {
+            if (res.status == 200){
+                res.json().then((data)=> {
+                    id = data['user_id'];
+                    is_admin = data['is_admin']
+                    if (!is_admin){
+                        window.location.href = 'dashboard.html?id=' + id.toString() + '&token=' + data['token'];
+                    }else{
+                        window.location.href = 'admin-dashboard.html?id=' + id.toString() + '&token=' + data['token'];
+                    }
+                   
+                });
+            
+            } else {
+                res.json()
+                .then(data => showSnackbar(error, data.message))
+            }
+            
+        })
+        
+        .catch((error) => console.log(error));
+    }
 }
 
 var pageTitle = document.querySelector('title').innerText;
@@ -134,15 +148,11 @@ function isThereEmptyField(inputs){
     for (input in inputs){
         if (!inputs[input].value){           
             inputs[input].classList.add('required');
-            showSnackbar(error, 'This field(s) are required');
+            showSnackbar(error, 'Please fill out this field(s)');
             isEmpty = true;
         }else {
             inputs[input].className = inputs[input].className.replace("required", "");
         }
-
-        // inputs[input].addEventListener('input', () => {
-        //     inputs[input].className = inputs[input].className.replace("required", "");
-        // });  
     }
     return isEmpty    
 }
