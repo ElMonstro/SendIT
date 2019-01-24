@@ -13,6 +13,11 @@ var inTransit = 'In-transit';
 var singleOrder = 'order';
 var admin = 'admin';
 var client = 'client';
+// Snack bar info types
+var error = 'error';
+var success = 'success';
+var plain = 'plain';
+
 
 // Elements
 const allOrdersDiv = document.querySelector('#all-orders')
@@ -22,7 +27,7 @@ const ordersTitle = document.querySelector('#title')
 const orderStatistics = document.querySelector('.order-statistics');
 const pageTitle = document.querySelector('title').innerText
 const createOrderBtn = document.querySelector('#new-order')
-
+// Client dashboard elements
 const transitOption = document.querySelector('#transit')
 const canceledOption = document.querySelector('#cancel')
 const allOption = document.querySelector('#all')
@@ -32,7 +37,9 @@ const adminTransitOption = document.querySelector('#admin-transit')
 const adminCanceledOption = document.querySelector('#admin-cancel')
 const adminAllOption = document.querySelector('#admin-all')
 const adminDeliveredOption = document.querySelector('#admin-deliver')
-
+// Snackbar elements
+var infoMsgDiv = document.querySelector('.info-msg');
+var infoMsgSpan = document.querySelector('.info');
 // Get passed variables
 var url = new URL(document.URL);
 let token = url.searchParams.get('token');
@@ -382,8 +389,6 @@ function viewOrder(user, mode, orderId) {
 
 function saveLocation(user, location, order_id){
     var saveLocationUrl = '';
-    var keys = {admin:'curr_location', 
-    client: 'dest_location'}
     if (user == admin){
         saveLocationUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/parcels/${order_id}/PresentLocation`;
         var payload = {curr_location: location}
@@ -392,7 +397,6 @@ function saveLocation(user, location, order_id){
         var payload = {dest_location: location}
      }     
      // Make request
-     console.log(payload)
      fetch(saveLocationUrl, {
         method: 'PUT',
         headers: {
@@ -402,8 +406,15 @@ function saveLocation(user, location, order_id){
         },
         body: JSON.stringify(payload)
     })
-    .then((resp) => resp.json())
-    .then((data) => console.log(data.message))
+    .then((resp) => {
+        if (resp.status == 200){
+            resp.json()
+            .then(data => showSnackbar(success, data.message));
+        } else {
+            resp.json()
+            .then(data => showSnackbar(success, data.message));
+        }        
+    })
     .catch((error) => console.log(error))
 }
 
@@ -428,15 +439,31 @@ function changeOrderStatus(user, orderId){
     .then((resp) => {
         
         if (resp.status == 200){
+            resp.json()
+            .then(data => showSnackbar(success, data.message))
             viewOrder(user, view, orderId);
+        }else{
+            resp.json()
+            .then(data => showSnackbar(error, data.message))
         }
-        resp.json()
-        .then(data => console.log(data.message))
+        
         
     })
     .catch((error) => console.log(error))    
     
 }
+
+// Function to display snackbar
+function showSnackbar(infoType, message){
+    infoMsgDiv.classList.remove(error, success)    
+    infoMsgSpan.innerText = message;
+    infoMsgDiv.classList.add(infoType);
+    infoMsgDiv.classList.add('show');
+    setTimeout(() => { 
+        infoMsgDiv.className = infoMsgDiv.className.replace("show", ""); }, 5000
+        );
+    }
+
 
 // Listen to DOMContentLoaded event
 document.addEventListener('DOMContentLoaded', () => {
