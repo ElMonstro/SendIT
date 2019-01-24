@@ -464,6 +464,31 @@ function showSnackbar(infoType, message){
         );
     }
 
+var deliveredStatSpan = document.querySelector('#delivered-stat');
+var canceledStatSpan = document.querySelector('#canceled-stat');
+var inTransitStatSpan = document.querySelector('#intransit-stat');
+var allOrdersStatSpan = document.querySelector('#all-stat');
+
+function setStats(orders){
+    var deliveredStat = 0;
+    var canceledStat = 0;
+    var allStat = orders.length();
+    var inTransitStat = 0;
+
+    orders.forEach(order => {
+        if (order['status'] == canceled){
+            canceledStat ++;
+        } else if (order['status'] == delivered){
+            deliveredStat ++;
+        } else if (order['status'] == inTransit){
+            inTransitStat ++;  
+        }              
+    });
+    deliveredStatSpan.innerText = deliveredStat;
+    canceledStatSpan.innerText = canceledStat;
+    inTransitStatSpan.innerText = inTransitStat;
+    allOrdersStatSpan.innerText = allStat;
+}
 
 // Listen to DOMContentLoaded event
 document.addEventListener('DOMContentLoaded', () => {
