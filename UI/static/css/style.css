@@ -671,6 +671,10 @@ form{
     background-color: rgb(7, 17, 163);
   }
 
+  .required{
+      background: rgb(250, 195, 181);
+  }
+
 /* Animations to fade info messaages in and out */
 @-webkit-keyframes fadein {
     from {bottom: 0; opacity: 0;}
