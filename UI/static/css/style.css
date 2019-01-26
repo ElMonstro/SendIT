@@ -167,7 +167,6 @@ header li{
 
 .description{
     background-color: rgb(246, 245, 250);
-    height: 50%;
     border-radius: 5px;
     padding-top: 1px;
 }
@@ -698,5 +697,49 @@ form{
   }
 
 
+/* Responsiveness */
 
+@media screen and (max-width:803px){
+
+    /* Index.html */
+    #process{
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cont{
+        overflow: scroll;
+    }
+
+    
+    
+}
+
+@media screen and (max-width:506px){
+
+    /* Index.html */
+    #process{
+        display: block;
+    }
+
+    .cont{
+        overflow: auto;
+    }
+
+    .step{
+        padding-bottom: 5px;
+        margin-bottom: 5px;
+    }
+
+    .nav ol{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .big-words{
+        font-size: 25px;
+        font-weight: 800;
+    }
+    
+    
+}
 
