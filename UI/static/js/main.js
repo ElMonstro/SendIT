@@ -25,8 +25,8 @@ const options = document.querySelectorAll('.option');
 var currentOption = all;
 const ordersTitle = document.querySelector('#title')
 const orderStatistics = document.querySelector('.order-statistics');
-const pageTitle = document.querySelector('title').innerText
-const createOrderBtn = document.querySelector('#new-order')
+const pageTitle = document.querySelector('title').innerText;
+const createOrderBtn = document.querySelector('#new-order');
 // Client dashboard elements
 const transitOption = document.querySelector('#transit')
 const canceledOption = document.querySelector('#cancel')
@@ -41,9 +41,9 @@ const adminDeliveredOption = document.querySelector('#admin-deliver')
 var infoMsgDiv = document.querySelector('.info-msg');
 var infoMsgSpan = document.querySelector('.info');
 // Get passed variables
-var url = new URL(document.URL);
-let token = url.searchParams.get('token');
-let userId = url.searchParams.get('id');
+let token = sessionStorage.getItem('token');
+let userId = sessionStorage.getItem('id');
+let username = sessionStorage.getItem('username');
 
 // Fuction to check if an object is empty
 function isEmpty(dict) {
@@ -62,6 +62,10 @@ function DisplayOrders(user, option) {
         actionButton = '<span class="action-btn" >Edit</span>';
         getOrdersUrl = 'https://pacific-harbor-80743.herokuapp.com/api/v2/parcels'; 
     }
+
+    document.querySelector('.acc-name').innerText = username.charAt(0).toUpperCase() + username.slice(1);
+    document.querySelector('.init').innerText = username.slice(0, 1).toUpperCase();
+
     // Fetch orders
     fetch(getOrdersUrl, {
         headers: {
@@ -101,7 +105,7 @@ function DisplayOrders(user, option) {
                 <span class="pickup">${pickupAdd}</span>
                 <span class="Destination">${destAdd}</span>
                 <span><span class="weight">${weight}</span> Kgs</span>
-                <span><span>Kshs</span> <span class="price"> ${price}</span></span>
+                <span class="price-span"><span>Kshs</span> <span class="price"> ${price}</span></span>
                 <span class="statuses"><span class="status">${status}</span></span>`;
     
     
@@ -118,6 +122,7 @@ function DisplayOrders(user, option) {
                 }
             }
             });
+            
     
             const statusSpan = orderDiv.querySelector('.status');
             const actionBtn = orderDiv.querySelector('.action-btn');
