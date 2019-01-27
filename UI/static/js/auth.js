@@ -109,11 +109,15 @@ function login(e){
                     id = data['user_id'];
                     is_admin = data['is_admin']
                     if (!is_admin){
-                        window.location.href = 'dashboard.html?id=' + id.toString() + '&token=' + data['token'];
+                        window.location.href = 'dashboard.html';
                     }else{
-                        window.location.href = 'admin-dashboard.html?id=' + id.toString() + '&token=' + data['token'];
+                        window.location.href = 'admin-dashboard.html';
                     }
-                   
+                    
+                    sessionStorage.setItem('token', data.token);
+                    sessionStorage.setItem('id', id.toString());
+                    sessionStorage.setItem('username', username);
+;                   
                 });
             
             } else {

@@ -23,9 +23,9 @@ plain = 'plain';
 
 
 // Get passed variables
-var url = new URL(document.URL);
-var token = url.searchParams.get('token');
-var id = url.searchParams.get('user_id');
+let token = sessionStorage.getItem('token');
+let userId = sessionStorage.getItem('id');
+let username = sessionStorage.getItem('username');
 
 // Add event listeners
 createBtn.addEventListener('click', createOrder)

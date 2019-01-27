@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/style.css"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 </head>
 
 <body>
@@ -51,16 +52,16 @@
                 <div id="title">
                     <div class="heading"><span>All your parcel Orders</span></div>
                     <div class="order-statistics">
-                        <div id="delivered-orders"><span class="delivered stat" id="dlvd">Delivered </span><span> </span></div>
-                        <div id="undelivered-orders"><span class="in-transit stat" id="trst">In Transit </span><span></span></div>
-                        <div id="cancelled-orders"><span class="canceled stat" id="cncld">Canceled </span><span></span></div>
+                        <div class="filter" id="delivered-orders"><span class="delivered stat" id="dlvd">Delivered </span><span> </span></div>
+                        <div class="filter" id="undelivered-orders"><span class="in-transit stat" id="trst">In Transit </span><span></span></div>
+                        <div class="filter" id="cancelled-orders"><span class="canceled stat" id="cncld">Canceled </span><span></span></div>
                     </div>
                     <div class="titles">
-                        <span class="order-no">Order #</span>
+                        <span class="order-no">#</span>
                         <span>Pickup</span>
-                        <span>Destination</span>
+                        <span>Dest.</span>
                         <span>Weight</span>
-                        <span>Price</span>
+                        <span class="price-span">Price</span>
                         <span>Status</span>
                     </div>
                 </div>
