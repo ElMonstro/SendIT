@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="static/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
@@ -49,16 +50,16 @@
                 <div id="title">
                     <div class="heading"><span>All Placed Orders</span></div>
                     <div class="order-statistics">
-                        <div id="delivered-orders"><span id="dlvd" class="delivered stat">Delivered </span><span> </span></div>
-                        <div id="undelivered-orders"><span id="trst" class="in-transit stat">In Transit </span><span></span></div>
-                        <div id="undelivered-orders"><span id="cncld" class="canceled stat">Canceled </span><span></span></div>
+                        <div class="filter" id="delivered-orders"><span id="dlvd" class="delivered stat">Delivered </span><span> </span></div>
+                        <div class="filter" id="undelivered-orders"><span id="trst" class="in-transit stat">In Transit </span><span></span></div>
+                        <div class="filter" id="undelivered-orders"><span id="cncld" class="canceled stat">Canceled </span><span></span></div>
                     </div>
                     <div class="titles">
-                        <span class="order-no">Order #</span>
+                        <span class="order-no">#</span>
                         <span>Pickup</span>
-                        <span>Destination</span>
+                        <span>Dest.</span>
                         <span>Weight</span>
-                        <span>Price</span>
+                        <span class="price-span">Price</span>
                         <span>Status</span>
                     </div>
                 </div>
