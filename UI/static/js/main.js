@@ -34,6 +34,8 @@ const ordersTitle = document.querySelector('#title')
 const orderStatistics = document.querySelector('.order-statistics');
 const pageTitle = document.querySelector('title').innerText;
 const createOrderBtn = document.querySelector('#new-order');
+const rejectedOption = document.querySelector('#reject');
+const newOption = document.querySelector('#new');
 // Client dashboard elements
 const transitOption = document.querySelector('#transit')
 const canceledOption = document.querySelector('#cancel')
@@ -188,14 +190,19 @@ function DisplayOrders(user, option) {
 
 
 
-
 // Add event listeners to side-panel options and order stats
 function AddEventListeners(user) {
+    newOption.addEventListener('click', () => {
+        DisplayOrders(user, pending);
+    });
 
+    rejectedOption.addEventListener('click', () => {
+        DisplayOrders(user, rejected)
+    });
     if (user == client) {
         // Client dashboard options
         createOrderBtn.addEventListener('click', () => {
-            window.location.href = 'create-order.html?token=' + token + '&user_id=' + userId.toString();
+            window.location.href = 'create-order.html';
         })
         transitOption.addEventListener('click', () => {
             DisplayOrders(client, inTransit)
