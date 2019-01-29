@@ -87,13 +87,18 @@ function DisplayOrders(user, option) {
         if (res.status == 404){
             res.json()
             .then((data) => {                
-            console.log(data.message)
+            showSnackbar(error, data.message)
             }) 
         } else if (res.status == 200){
                 res.json().then((data) => {
                 setStats(data.orders);
                 loopThroughOrders(data.orders);
                 })            
+        } else if (res.status == 401){
+            res.json().then((data) => {
+                showSnackbar(error, data.message)
+                window.location.href = 'login.html';
+                });   
         }
     })
     .catch((err) => console.log(err)) 
@@ -272,12 +277,20 @@ function viewOrder(user, mode, orderId) {
         'token': token
         }
     } )
-    .then((resp) => resp.json())
-    .then((data) => {
-        var order = data.order;
-        display(order);
-
+    .then(res => {
+        if (res.status == 200){
+            res.json()
+            .then(data => display(data.order));
+        } else if (res.status == 401){
+            res.json()
+            .then(data => showSnackbar(error, data.message))
+            window.location.href = 'login.html';            
+        } else {
+            res.json()
+            .then(data => showSnackbar(error, data.message))
+        }
     })
+    
 
     // Function to display order
     function display(order){

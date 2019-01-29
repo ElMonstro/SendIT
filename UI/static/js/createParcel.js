@@ -33,6 +33,9 @@ homeBtns.forEach((btn) => btn.addEventListener('click', () => {
     window.location.href = 'dashboard.html?id=' + id.toString() + '&token=' + token;
 }))
 
+if (token.length < 20){
+    window.location.href = 'login.html';
+}
 // Function to create parcel
 function createOrder(e){
     e.preventDefault();
