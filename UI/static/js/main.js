@@ -550,6 +550,13 @@ function setStats(orders){
     rejectedStatSpan.innerText = rejectedStat;
 }
 
+const logoutBtn = document.querySelector('#logout')
+
+logoutBtn.onclick = () => {
+    sessionStorage.setItem('token', 'gibberish');
+    window.location.href = 'login.html';
+}
+
 
 // Listen to DOMContentLoaded event
 document.addEventListener('DOMContentLoaded', () => {
