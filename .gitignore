@@ -104,3 +104,4 @@ venv.bak/
 .mypy_cache/
 UI/static/img/Admin Dashboard_files/
 .vscode/settings.json
+node_modules/*
