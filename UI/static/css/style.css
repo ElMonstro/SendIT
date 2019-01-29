@@ -431,6 +431,8 @@ form{
     background-color: #fff;
     padding: 5px;
     border-radius: 3px;
+    height: 25px;
+    overflow: hidden;
 }
 
 .order:hover{
@@ -477,8 +479,38 @@ form{
 }
 
 .delivered{
-    background-color: rgb(30, 170, 72)
+    background-color: rgb(30, 170, 72);
 }
+
+.rejected{
+    background-color: red;
+}
+
+.pending{
+    background-color: rgb(230, 190, 13);
+}
+
+
+.accept{
+    background-color: rgb(30, 170, 72);
+    border-color: #4e8200;
+    margin-right: 2px;
+}
+
+.reject{
+    background-color: red;
+    border-color: #950828;
+}
+
+.action-btn{
+    
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 2px;  
+    color: white;  
+}
+
+
 
 
 /* Order Details */
@@ -602,21 +634,13 @@ form{
     display: none; 
 }
 
-.edit-btn:hover, .edit-button:hover{
+.edit-btn:hover{
     background-color: blue;
     color: #fff;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); 
 }
 
-.action-btn{
-    justify-self: end;
-    padding-right: 4px;
-    cursor: pointer;
-    display: none;
-    padding: 4px;
-    border-radius: 4px;
-    
-}
+
 
 .action-btn:hover{
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); 
