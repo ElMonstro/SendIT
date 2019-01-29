@@ -399,7 +399,7 @@ function viewOrder(user, mode, orderId) {
                     saveLocation(user, destLoc, orderId);
                 });
                 cancelBtn.addEventListener('click', () => {
-                    changeOrderStatus(user,cancel, orderId);
+                    changeOrderStatus(true, user,cancel, orderId);
                 });
 
 
@@ -518,12 +518,16 @@ var deliveredStatSpan = document.querySelector('#delivered-stat');
 var canceledStatSpan = document.querySelector('#canceled-stat');
 var inTransitStatSpan = document.querySelector('#intransit-stat');
 var allOrdersStatSpan = document.querySelector('#all-stat');
+var rejectedStatSpan = document.querySelector('#reject-stat');
+var newStatSpan = document.querySelector('#new-stat');
 
 function setStats(orders){
     var deliveredStat = 0;
     var canceledStat = 0;
     var allStat = orders.length;
     var inTransitStat = 0;
+    var newStat = 0;
+    var rejectedStat = 0;
 
     orders.forEach(order => {
         if (order['status'] == canceled){
@@ -532,12 +536,18 @@ function setStats(orders){
             deliveredStat ++;
         } else if (order['status'] == inTransit){
             inTransitStat ++;  
-        }              
+        } else if (order['status'] == pending){
+            newStat ++;  
+        } else if (order['status'] == rejected){
+            rejectedStat ++;  
+        }    
     });
     deliveredStatSpan.innerText = deliveredStat;
     canceledStatSpan.innerText = canceledStat;
     inTransitStatSpan.innerText = inTransitStat;
     allOrdersStatSpan.innerText = allStat;
+    newStatSpan.innerText = newStat;
+    rejectedStatSpan.innerText = rejectedStat;
 }
 
 
