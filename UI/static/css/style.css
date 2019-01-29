@@ -510,6 +510,10 @@ form{
     color: white;  
 }
 
+.action-buttons{
+    float: right;
+}
+
 
 
 

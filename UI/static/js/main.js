@@ -138,24 +138,26 @@ function DisplayOrders(user, option) {
             // Display different colors for different status           
             statusSpan.classList.add(status.toLowerCase());
 
-            if (status == pending){
+            if (status == pending && user == admin){
                 statusSpan.onmouseover =  () => {
                     statusColumn.innerHTML = actionButtons;
                     var actionBtnsSpan = statusColumn.querySelector('.action-buttons');
-                    actionBtnsSpan.onclick = e => {
-                        orderId = e.target.parentNode.parentNode.parentNode.querySelector('.order-id').innerHTML;
-                        var action = e.target.innerHTML
-                        if (action == accept){
-                            changeOrderStatus(false, user, action, orderId);
-                            DisplayOrders(user, option);
-                            actionBtnsSpan.disabled = true;
-                        }else if (action == reject){
-                            changeOrderStatus(false, user, action, orderId);
-                            DisplayOrders(user, option);
-                            actionBtnsSpan.disabled = true;
+                    var rejectBtn = statusColumn.querySelector('.reject');
+                    var acceptBtn = statusColumn.querySelector('.accept');
 
-                        }
-                    } 
+                    acceptBtn.onclick = e => {
+                        orderId = e.target.parentNode.parentNode.parentNode.querySelector('.order-id').innerHTML;
+                        changeOrderStatus(false, user, accept, orderId);
+                        actionBtnsSpan.disabled = true;
+                        console.log(accept)
+                    }
+
+                    rejectBtn.onclick = e => {
+                        orderId = e.target.parentNode.parentNode.parentNode.querySelector('.order-id').innerHTML;
+                        changeOrderStatus(false, user, reject, orderId);
+                        actionBtnsSpan.disabled = true;
+                        console.log(reject)
+                    }
 
                 }
 
