@@ -10,6 +10,13 @@ var all = 'all';
 var canceled = 'Canceled';
 var delivered = 'Delivered';
 var inTransit = 'In-transit';
+var pending = 'Pending';
+var rejected = 'Rejected';
+// Change order status options
+var accept = 'accept';
+var reject = 'reject';
+var deliver = 'deliver';
+var cancel = 'cancel';
 var singleOrder = 'order';
 var admin = 'admin';
 var client = 'client';
@@ -27,6 +34,8 @@ const ordersTitle = document.querySelector('#title')
 const orderStatistics = document.querySelector('.order-statistics');
 const pageTitle = document.querySelector('title').innerText;
 const createOrderBtn = document.querySelector('#new-order');
+const rejectedOption = document.querySelector('#reject');
+const newOption = document.querySelector('#new');
 // Client dashboard elements
 const transitOption = document.querySelector('#transit')
 const canceledOption = document.querySelector('#cancel')
@@ -55,6 +64,7 @@ function DisplayOrders(user, option) {
     allOrdersDiv.style.marginTop = '0px';
     ordersTitle.style.display = 'grid';
     currentOption = option;
+    var actionButtons = `<span class="action-buttons"><span class="action-btn accept">accept</span><span class="action-btn reject">reject</span></span>`
     allOrdersDiv.innerHTML = '';
     let getOrdersUrl = 'https://pacific-harbor-80743.herokuapp.com/api/v2/users/' + userId.toString() + '/parcels';
     var actionButton = '<span class="action-btn cancel-btn">Cancel</span>';
@@ -98,6 +108,7 @@ function DisplayOrders(user, option) {
             var weight = order.weight;
             var price = weight * pricePerKg;
             var status = order.status;
+            var statusHtml = `<span class="statuses"><span class="status">${status}</span></span>`
             const orderDiv = document.createElement('div');
             orderDiv.className = 'order';
             orderDiv.innerHTML =
@@ -106,7 +117,7 @@ function DisplayOrders(user, option) {
                 <span class="Destination">${destAdd}</span>
                 <span><span class="weight">${weight}</span> Kgs</span>
                 <span class="price-span"><span>Kshs</span> <span class="price"> ${price}</span></span>
-                <span class="statuses"><span class="status">${status}</span></span>`;
+                <span class="status-column">${statusHtml}</span>`;
     
     
             orderDiv.addEventListener('click', (e) => {
@@ -116,27 +127,53 @@ function DisplayOrders(user, option) {
                     var clickedOrderId = clickedOrder.innerHTML               
 
                 if(e.target.classList.contains('cancel-btn')){
-                    changeOrderStatus(user, clickedOrderId);
+                    changeOrderStatus(user, cancel, clickedOrderId);
                 }else{
                     viewOrder(user, view, clickedOrderId);
                 }
             }
             });
             
-    
-            const statusSpan = orderDiv.querySelector('.status');
+            const statusColumn = orderDiv.querySelector('.status-column');
+            var statusSpan = orderDiv.querySelector('.status');
             const actionBtn = orderDiv.querySelector('.action-btn');
-            // Display different colors for different status
-            if (status == canceled) {
-                statusSpan.classList.add('canceled')
+            // Display different colors for different status           
+            statusSpan.classList.add(status.toLowerCase());
+
+            if (status == pending && user == admin){
+                statusSpan.onmouseover =  () => {
+                    statusColumn.innerHTML = actionButtons;
+                    var actionBtnsSpan = statusColumn.querySelector('.action-buttons');
+                    var rejectBtn = statusColumn.querySelector('.reject');
+                    var acceptBtn = statusColumn.querySelector('.accept');
+
+                    acceptBtn.onclick = e => {
+                        orderId = e.target.parentNode.parentNode.parentNode.querySelector('.order-id').innerHTML;
+                        changeOrderStatus(false, user, accept, orderId);
+                        actionBtnsSpan.disabled = true;
+                        console.log(accept)
+                    }
+
+                    rejectBtn.onclick = e => {
+                        orderId = e.target.parentNode.parentNode.parentNode.querySelector('.order-id').innerHTML;
+                        changeOrderStatus(false, user, reject, orderId);
+                        actionBtnsSpan.disabled = true;
+                        console.log(reject)
+                    }
+
+                }
+
+                statusColumn.onmouseleave = () =>{
+                    var statuses = document.createRange().createContextualFragment(statusHtml);
+                    statusSpan = statuses.querySelector('.status');
+                    statusSpan.classList.add('pending');
+                    statusSpan.innerText = 'Pending'
+                    statusSpan.onmouseover = () => statusColumn.innerHTML = actionButtons;
+                    statusColumn.innerHTML = '';
+                    statusColumn.appendChild(statuses);
+                }
             }
-            if (status == inTransit) {
-                
-                statusSpan.classList.add('in-transit')
-            }
-            if (status == delivered) {
-                statusSpan.classList.add('delivered')
-            }
+           
             
             // Filter viewed orders
             if (option == all) {
@@ -153,14 +190,19 @@ function DisplayOrders(user, option) {
 
 
 
-
 // Add event listeners to side-panel options and order stats
 function AddEventListeners(user) {
+    newOption.addEventListener('click', () => {
+        DisplayOrders(user, pending);
+    });
 
+    rejectedOption.addEventListener('click', () => {
+        DisplayOrders(user, rejected)
+    });
     if (user == client) {
         // Client dashboard options
         createOrderBtn.addEventListener('click', () => {
-            window.location.href = 'create-order.html?token=' + token + '&user_id=' + userId.toString();
+            window.location.href = 'create-order.html';
         })
         transitOption.addEventListener('click', () => {
             DisplayOrders(client, inTransit)
@@ -357,7 +399,7 @@ function viewOrder(user, mode, orderId) {
                     saveLocation(user, destLoc, orderId);
                 });
                 cancelBtn.addEventListener('click', () => {
-                    changeOrderStatus(user, orderId);
+                    changeOrderStatus(true, user,cancel, orderId);
                 });
 
 
@@ -379,7 +421,8 @@ function viewOrder(user, mode, orderId) {
                     saveLocation(user, currentLoc, orderId);
                 });
                 deliverBtn.addEventListener('click', () => {
-                    changeOrderStatus(user, orderId);
+                    console.log(deliver)
+                    changeOrderStatus(true, user, deliver, orderId);
                 });
         
             }
@@ -425,13 +468,9 @@ function saveLocation(user, location, order_id){
 }
 
 // Function to change order status
-function changeOrderStatus(user, orderId){
+function changeOrderStatus(viewOrders=true, user, action, orderId){
     var changeStatusUrl;
-    if (user == admin){
-        changeStatusUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/parcels/${orderId}/deliver`;
-    }else if(user == client){
-        changeStatusUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/parcels/${orderId}/cancel`;
-    }
+    changeStatusUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/parcels/${orderId}/${action}`;
 
     // Make request
     fetch(changeStatusUrl, {
@@ -447,7 +486,12 @@ function changeOrderStatus(user, orderId){
         if (resp.status == 200){
             resp.json()
             .then(data => showSnackbar(success, data.message))
-            viewOrder(user, view, orderId);
+            if (viewOrders){
+                viewOrder(user, view, orderId);
+            }else{
+                DisplayOrders(user, all);
+            }
+            
         }else{
             resp.json()
             .then(data => showSnackbar(error, data.message))
@@ -474,12 +518,16 @@ var deliveredStatSpan = document.querySelector('#delivered-stat');
 var canceledStatSpan = document.querySelector('#canceled-stat');
 var inTransitStatSpan = document.querySelector('#intransit-stat');
 var allOrdersStatSpan = document.querySelector('#all-stat');
+var rejectedStatSpan = document.querySelector('#reject-stat');
+var newStatSpan = document.querySelector('#new-stat');
 
 function setStats(orders){
     var deliveredStat = 0;
     var canceledStat = 0;
     var allStat = orders.length;
     var inTransitStat = 0;
+    var newStat = 0;
+    var rejectedStat = 0;
 
     orders.forEach(order => {
         if (order['status'] == canceled){
@@ -488,13 +536,20 @@ function setStats(orders){
             deliveredStat ++;
         } else if (order['status'] == inTransit){
             inTransitStat ++;  
-        }              
+        } else if (order['status'] == pending){
+            newStat ++;  
+        } else if (order['status'] == rejected){
+            rejectedStat ++;  
+        }    
     });
     deliveredStatSpan.innerText = deliveredStat;
     canceledStatSpan.innerText = canceledStat;
     inTransitStatSpan.innerText = inTransitStat;
     allOrdersStatSpan.innerText = allStat;
+    newStatSpan.innerText = newStat;
+    rejectedStatSpan.innerText = rejectedStat;
 }
+
 
 // Listen to DOMContentLoaded event
 document.addEventListener('DOMContentLoaded', () => {
