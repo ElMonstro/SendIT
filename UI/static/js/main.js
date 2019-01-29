@@ -10,6 +10,8 @@ var all = 'all';
 var canceled = 'Canceled';
 var delivered = 'Delivered';
 var inTransit = 'In-transit';
+var pending = 'Pending';
+var rejected = 'Rejected';
 var singleOrder = 'order';
 var admin = 'admin';
 var client = 'client';
@@ -55,6 +57,7 @@ function DisplayOrders(user, option) {
     allOrdersDiv.style.marginTop = '0px';
     ordersTitle.style.display = 'grid';
     currentOption = option;
+    var actionButtons = `<span class="action-buttons"><span class="action-btn accept">accept</span><span class="action-btn reject">reject</span></span>`
     allOrdersDiv.innerHTML = '';
     let getOrdersUrl = 'https://pacific-harbor-80743.herokuapp.com/api/v2/users/' + userId.toString() + '/parcels';
     var actionButton = '<span class="action-btn cancel-btn">Cancel</span>';
@@ -98,6 +101,7 @@ function DisplayOrders(user, option) {
             var weight = order.weight;
             var price = weight * pricePerKg;
             var status = order.status;
+            var statusHtml = `<span class="statuses"><span class="status">${status}</span></span>`
             const orderDiv = document.createElement('div');
             orderDiv.className = 'order';
             orderDiv.innerHTML =
@@ -106,7 +110,7 @@ function DisplayOrders(user, option) {
                 <span class="Destination">${destAdd}</span>
                 <span><span class="weight">${weight}</span> Kgs</span>
                 <span class="price-span"><span>Kshs</span> <span class="price"> ${price}</span></span>
-                <span class="statuses"><span class="status">${status}</span></span>`;
+                <span class="status-column">${statusHtml}</span>`;
     
     
             orderDiv.addEventListener('click', (e) => {
@@ -123,20 +127,25 @@ function DisplayOrders(user, option) {
             }
             });
             
-    
-            const statusSpan = orderDiv.querySelector('.status');
+            const statusColumn = orderDiv.querySelector('.status-column');
+            var statusSpan = orderDiv.querySelector('.status');
             const actionBtn = orderDiv.querySelector('.action-btn');
-            // Display different colors for different status
-            if (status == canceled) {
-                statusSpan.classList.add('canceled')
+            // Display different colors for different status           
+            statusSpan.classList.add(status.toLowerCase());
+
+            if (status == pending){
+                statusSpan.onmouseover =  () => statusColumn.innerHTML = actionButtons;
+
+                statusColumn.onmouseleave = () =>{
+                    var statuses = document.createRange().createContextualFragment(statusHtml);
+                    statusSpan = statuses.querySelector('.status');
+                    statusSpan.classList.add('pending');
+                    statusSpan.onmouseover = () => statusColumn.innerHTML = actionButtons;
+                    statusColumn.innerHTML = '';
+                    statusColumn.appendChild(statuses);
+                }
             }
-            if (status == inTransit) {
-                
-                statusSpan.classList.add('in-transit')
-            }
-            if (status == delivered) {
-                statusSpan.classList.add('delivered')
-            }
+           
             
             // Filter viewed orders
             if (option == all) {
