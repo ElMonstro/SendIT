@@ -12,6 +12,11 @@ var delivered = 'Delivered';
 var inTransit = 'In-transit';
 var pending = 'Pending';
 var rejected = 'Rejected';
+// Change order status options
+var accept = 'accept';
+var reject = 'reject';
+var deliver = 'deliver';
+var cancel = 'cancel';
 var singleOrder = 'order';
 var admin = 'admin';
 var client = 'client';
@@ -120,7 +125,7 @@ function DisplayOrders(user, option) {
                     var clickedOrderId = clickedOrder.innerHTML               
 
                 if(e.target.classList.contains('cancel-btn')){
-                    changeOrderStatus(user, clickedOrderId);
+                    changeOrderStatus(user, cancel, clickedOrderId);
                 }else{
                     viewOrder(user, view, clickedOrderId);
                 }
@@ -134,12 +139,31 @@ function DisplayOrders(user, option) {
             statusSpan.classList.add(status.toLowerCase());
 
             if (status == pending){
-                statusSpan.onmouseover =  () => statusColumn.innerHTML = actionButtons;
+                statusSpan.onmouseover =  () => {
+                    statusColumn.innerHTML = actionButtons;
+                    var actionBtnsSpan = statusColumn.querySelector('.action-buttons');
+                    actionBtnsSpan.onclick = e => {
+                        orderId = e.target.parentNode.parentNode.parentNode.querySelector('.order-id').innerHTML;
+                        var action = e.target.innerHTML
+                        if (action == accept){
+                            changeOrderStatus(false, user, action, orderId);
+                            DisplayOrders(user, option);
+                            actionBtnsSpan.disabled = true;
+                        }else if (action == reject){
+                            changeOrderStatus(false, user, action, orderId);
+                            DisplayOrders(user, option);
+                            actionBtnsSpan.disabled = true;
+
+                        }
+                    } 
+
+                }
 
                 statusColumn.onmouseleave = () =>{
                     var statuses = document.createRange().createContextualFragment(statusHtml);
                     statusSpan = statuses.querySelector('.status');
                     statusSpan.classList.add('pending');
+                    statusSpan.innerText = 'Pending'
                     statusSpan.onmouseover = () => statusColumn.innerHTML = actionButtons;
                     statusColumn.innerHTML = '';
                     statusColumn.appendChild(statuses);
@@ -366,7 +390,7 @@ function viewOrder(user, mode, orderId) {
                     saveLocation(user, destLoc, orderId);
                 });
                 cancelBtn.addEventListener('click', () => {
-                    changeOrderStatus(user, orderId);
+                    changeOrderStatus(user,cancel, orderId);
                 });
 
 
@@ -388,7 +412,8 @@ function viewOrder(user, mode, orderId) {
                     saveLocation(user, currentLoc, orderId);
                 });
                 deliverBtn.addEventListener('click', () => {
-                    changeOrderStatus(user, orderId);
+                    console.log(deliver)
+                    changeOrderStatus(true, user, deliver, orderId);
                 });
         
             }
@@ -434,13 +459,9 @@ function saveLocation(user, location, order_id){
 }
 
 // Function to change order status
-function changeOrderStatus(user, orderId){
+function changeOrderStatus(viewOrders=true, user, action, orderId){
     var changeStatusUrl;
-    if (user == admin){
-        changeStatusUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/parcels/${orderId}/deliver`;
-    }else if(user == client){
-        changeStatusUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/parcels/${orderId}/cancel`;
-    }
+    changeStatusUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/parcels/${orderId}/${action}`;
 
     // Make request
     fetch(changeStatusUrl, {
@@ -456,7 +477,12 @@ function changeOrderStatus(user, orderId){
         if (resp.status == 200){
             resp.json()
             .then(data => showSnackbar(success, data.message))
-            viewOrder(user, view, orderId);
+            if (viewOrders){
+                viewOrder(user, view, orderId);
+            }else{
+                DisplayOrders(user, all);
+            }
+            
         }else{
             resp.json()
             .then(data => showSnackbar(error, data.message))
@@ -504,6 +530,7 @@ function setStats(orders){
     inTransitStatSpan.innerText = inTransitStat;
     allOrdersStatSpan.innerText = allStat;
 }
+
 
 // Listen to DOMContentLoaded event
 document.addEventListener('DOMContentLoaded', () => {
