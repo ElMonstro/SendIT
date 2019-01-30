@@ -37,6 +37,7 @@ const createOrderBtn = document.querySelector('#new-order');
 const rejectedOption = document.querySelector('#reject');
 const newOption = document.querySelector('#new');
 const dashboardCont = document.querySelector('.dash-cont .cont');
+const notificationOption = document.querySelector('#notifications-option')
 // Client dashboard elements
 const transitOption = document.querySelector('#transit')
 const canceledOption = document.querySelector('#cancel')
@@ -247,6 +248,8 @@ function AddEventListeners(user) {
 
     }
 
+    notificationOption.onclick = showNotifications
+
     // Order statistics event listener for both admin and client dashboards
     orderStatistics.addEventListener('click', (e) => {
         if (e.target.id == 'dlvd') {
@@ -435,7 +438,6 @@ function viewOrder(user, mode, orderId) {
                     saveLocation(user, currentLoc, orderId);
                 });
                 deliverBtn.addEventListener('click', () => {
-                    console.log(deliver)
                     changeOrderStatus(true, user, deliver, orderId);
                 });
         
@@ -565,10 +567,13 @@ function setStats(orders){
 }
 
 function showNotifications(){
+    allOrdersDiv.innerHTML = ''
+    ordersTitle.style.display = 'none';
+    allOrdersDiv.style.marginTop = '50px';
     var notificationsDiv = document.createElement('div');
     notificationsDiv.id = 'notifications'
     var notificationsUrl = 'https://pacific-harbor-80743.herokuapp.com/api/v2/users/' + userId.toString() + '/notifications';
-    fetch(orderUrl, {
+    fetch(notificationsUrl, {
         headers: {
         'Accept': 'application/json, text/plain, */*',
         'token': token
@@ -577,7 +582,7 @@ function showNotifications(){
     .then(res => {
         if (res.status == 200){
             res.json()
-            .then(data => showNotifications(data.notifications))
+            .then(data => loopThroughNotifications(data.notifications))
         }else{
             res.json()
             .then(data => showSnackbar(data.message))
@@ -588,21 +593,34 @@ function showNotifications(){
 
     function loopThroughNotifications(notifications){
         notifications.forEach(notification => {
+            var colorClass;
             var message = notification.message;
-            var headerTxt = notification.message.split(' ')[-1].charAt(0).toUpperCase() + username.slice(1) + '!';
+            var headerTxt = notification.message.split(' ').pop();
+            var headertxts = [rejected.toLocaleLowerCase(), delivered.toLocaleLowerCase(), canceled.toLocaleLowerCase()];
+            if (!headertxts.includes(headerTxt)){
+                if (headerTxt == 'accepted'){
+                    colorClass = 'in-transit';                    
+                }else{
+                    colorClass = 'plain'
+                    headerTxt = 'location Changed'
+                }
+            }else{ 
+                colorClass = headerTxt;               
+            }
+
+            headerTxt = headerTxt.charAt(0).toUpperCase() + headerTxt.slice(1) + '!';
             var notificationId = notification.notification_id;
             var order_id = notification.order_id;
             var date = notification.created_on;
 
             var notificationDiv = document.createElement('div');
-            notificationDiv.outerHTML = 
-                `<div class="notification">
-                    <div class="header"><span class="header-txt">${headerTxt}</span><button class="close-btn">×<span class="noti-id invincible">${notificationId}</span></button></div>
-                    <div class="message">
-                        <span class="text">${message}</span>
-                        <div class="date">${date}</div>
-                        <span class="order-id invincible">${order_id}</span>
-                    </div>
+            notificationDiv.className = 'notification'
+            notificationDiv.innerHTML = 
+                `<div class="header ${colorClass}"><span class="header-txt">${headerTxt}</span><button class="close-btn">×<span class="noti-id invincible">${notificationId}</span></button></div>
+                <div class="message">
+                    <span class="text">${message}</span>
+                    <div class="date">${date}</div>
+                    <span class="order-id invincible">${order_id}</span>
                 </div>`
             notificationsDiv.appendChild(notificationDiv)
             
@@ -610,8 +628,7 @@ function showNotifications(){
        
     }
 
-    dashboardCont.innerHTML = '';
-    dashboardCont.appendChild(notificationsDiv);
+    allOrdersDiv.appendChild(notificationsDiv);
 
 
 }
@@ -629,10 +646,10 @@ logoutBtn.onclick = () => {
 document.addEventListener('DOMContentLoaded', () => {
     if (pageTitle == 'Admin Dashboard') {
         AddEventListeners(admin);
-        //DisplayOrders(admin, all);
+        DisplayOrders(admin, all);
     } else {
         AddEventListeners(client);
-        //DisplayOrders(client, all);
+        DisplayOrders(client, all);
     }
 
 

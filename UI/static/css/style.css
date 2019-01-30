@@ -317,7 +317,7 @@ form{
 
 .option img {
     height: 30px;
-    padding-left: 10px;
+    padding-left: 5px;
     cursor: pointer;
 }
 
@@ -426,7 +426,7 @@ form{
     padding: 0 2px 1px 2px ;
 
     border-radius: 5px;
-    box-shadow: 0px 3px 5px rgba(100, 100, 100, 0.49);
+    /* box-shadow: 0px 3px 5px rgba(100, 100, 100, 0.49); */
     
 
 }
@@ -719,7 +719,7 @@ form{
   /* Notifications */
   .notification{
       background-color: #fff;
-      width: 30%;
+      width: 100%;
       border-radius: 5px;
       box-shadow: 0px 0px 5px rgba(100, 100, 100, 0.49);
   }
@@ -746,10 +746,15 @@ form{
     outline: inherit;
   }
 
+  .close-btn:hover{
+      color: red;
+  }
+
   .header{
-      background-color: #4e8200;
       color: #fff;
       padding-left: 4px;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
   }
 
   .date{
@@ -758,7 +763,8 @@ form{
 
   #notifications{
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 1em;
   }
 
 /* Animations to fade info messaages in and out */
