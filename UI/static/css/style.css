@@ -758,7 +758,8 @@ form{
   }
 
   .date{
-      color: rgb(107, 107, 109)
+      color: rgb(107, 107, 109);
+      cursor: default;
   }
 
   #notifications{

@@ -618,10 +618,40 @@ function showNotifications(){
             notificationDiv.innerHTML = 
                 `<div class="header ${colorClass}"><span class="header-txt">${headerTxt}</span><button class="close-btn">×<span class="noti-id invincible">${notificationId}</span></button></div>
                 <div class="message">
-                    <span class="text">${message}</span>
+                    ${message}
                     <div class="date">${date}</div>
                     <span class="order-id invincible">${order_id}</span>
                 </div>`
+
+            notificationDiv.querySelector('.message').onclick = e =>{
+                var orderIdSpan = e.target.querySelector('.order-id');
+                var orderId;
+                if (orderIdSpan){
+                    orderId = orderIdSpan.innerText; 
+                    if (pageTitle == 'Dashboard'){
+                        viewOrder(client, view, orderId);
+                    } else {
+                        viewOrder(admin, view, orderId);
+                    }
+                }
+            } 
+            notificationDiv.querySelector('.close-btn').onclick = e => {
+                var clickedNotiDiv =  e.target.parentNode.parentNode;
+                clickedNotiDiv.style.display = 'none';
+                var notificationId = e.target.querySelector('.noti-id').innerText;
+                var seeNotificationUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/notifications/${notificationId}`;
+                fetch(seeNotificationUrl, {
+                    method: 'PUT',
+                    headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-type': 'application/json',
+                    'token': token
+                    }
+                })
+                .then(res => res.json())
+                .then(data => showSnackbar(plain, data.message));
+       
+            }
             notificationsDiv.appendChild(notificationDiv)
             
         });
