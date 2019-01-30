@@ -36,6 +36,7 @@ const pageTitle = document.querySelector('title').innerText;
 const createOrderBtn = document.querySelector('#new-order');
 const rejectedOption = document.querySelector('#reject');
 const newOption = document.querySelector('#new');
+const dashboardCont = document.querySelector('.dash-cont .cont');
 // Client dashboard elements
 const transitOption = document.querySelector('#transit')
 const canceledOption = document.querySelector('#cancel')
@@ -563,6 +564,58 @@ function setStats(orders){
     rejectedStatSpan.innerText = rejectedStat;
 }
 
+function showNotifications(){
+    var notificationsDiv = document.createElement('div');
+    notificationsDiv.id = 'notifications'
+    var notificationsUrl = 'https://pacific-harbor-80743.herokuapp.com/api/v2/users/' + userId.toString() + '/notifications';
+    fetch(orderUrl, {
+        headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'token': token
+        }
+    } )
+    .then(res => {
+        if (res.status == 200){
+            res.json()
+            .then(data => showNotifications(data.notifications))
+        }else{
+            res.json()
+            .then(data => showSnackbar(data.message))
+        }
+    })
+    .catch(err => console.log(err))
+    
+
+    function loopThroughNotifications(notifications){
+        notifications.forEach(notification => {
+            var message = notification.message;
+            var headerTxt = notification.message.split(' ')[-1].charAt(0).toUpperCase() + username.slice(1) + '!';
+            var notificationId = notification.notification_id;
+            var order_id = notification.order_id;
+            var date = notification.created_on;
+
+            var notificationDiv = document.createElement('div');
+            notificationDiv.outerHTML = 
+                `<div class="notification">
+                    <div class="header"><span class="header-txt">${headerTxt}</span><button class="close-btn">×<span class="noti-id invincible">${notificationId}</span></button></div>
+                    <div class="message">
+                        <span class="text">${message}</span>
+                        <div class="date">${date}</div>
+                        <span class="order-id invincible">${order_id}</span>
+                    </div>
+                </div>`
+            notificationsDiv.appendChild(notificationDiv)
+            
+        });
+       
+    }
+
+    dashboardCont.innerHTML = '';
+    dashboardCont.appendChild(notificationsDiv);
+
+
+}
+
 const logoutBtn = document.querySelector('#logout')
 
 logoutBtn.onclick = () => {
@@ -571,14 +624,15 @@ logoutBtn.onclick = () => {
 }
 
 
+
 // Listen to DOMContentLoaded event
 document.addEventListener('DOMContentLoaded', () => {
     if (pageTitle == 'Admin Dashboard') {
         AddEventListeners(admin);
-        DisplayOrders(admin, all);
+        //DisplayOrders(admin, all);
     } else {
         AddEventListeners(client);
-        DisplayOrders(client, all);
+        //DisplayOrders(client, all);
     }
 
 
