@@ -37,7 +37,8 @@ const createOrderBtn = document.querySelector('#new-order');
 const rejectedOption = document.querySelector('#reject');
 const newOption = document.querySelector('#new');
 const dashboardCont = document.querySelector('.dash-cont .cont');
-const notificationOption = document.querySelector('#notifications-option')
+const notificationOption = document.querySelector('#notifications-option');
+const notificationStatSpan = document.querySelector('#notification-stat');
 // Client dashboard elements
 const transitOption = document.querySelector('#transit')
 const canceledOption = document.querySelector('#cancel')
@@ -63,6 +64,7 @@ function isEmpty(dict) {
 
 // Function to display order from
 function DisplayOrders(user, option) {
+    setNotificationStat();
     allOrdersDiv.style.marginTop = '0px';
     ordersTitle.style.display = 'grid';
     currentOption = option;
@@ -642,6 +644,7 @@ function showNotifications(){
                 }
             } 
             notificationDiv.querySelector('.close-btn').onclick = e => {
+                setNotificationStat();
                 var clickedNotiDiv =  e.target.parentNode.parentNode;
                 clickedNotiDiv.style.display = 'none';
                 var notificationId = e.target.querySelector('.noti-id').innerText;
@@ -671,6 +674,8 @@ function showNotifications(){
 
 // Clear notifications function
 function clearNotifications(){
+    notificationStatSpan.classList.remove('new-notifications');
+    notificationStatSpan.innerText = 0;
     document.querySelector('#notifications').style.display = 'none';
     var clearNotificationsUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/users/${userId}/notifications`;
     fetch(clearNotificationsUrl, {
@@ -684,6 +689,30 @@ function clearNotifications(){
     .then(res => res.json())
     .then(data => showSnackbar(plain, data.message))
 
+}
+
+// Function to set new notifications stat
+function setNotificationStat(){
+    var notificationsUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/users/${userId}/notifications`;
+    fetch(notificationsUrl, {
+        headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'token': token
+        }
+    } )
+    .then(res => {
+        if (res.status == 200){
+            res.json()
+            .then(data => {
+                notificationStatSpan.innerText = data.notifications.length;
+                notificationStatSpan.classList.add('new-notifications');
+            })
+            
+        }else{
+            notificationStatSpan.innerText = 0;
+            notificationStatSpan.classList.remove('new-notifications');
+        }
+    })
 }
 
 const logoutBtn = document.querySelector('#logout')
