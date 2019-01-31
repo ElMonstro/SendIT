@@ -36,6 +36,9 @@ const pageTitle = document.querySelector('title').innerText;
 const createOrderBtn = document.querySelector('#new-order');
 const rejectedOption = document.querySelector('#reject');
 const newOption = document.querySelector('#new');
+const dashboardCont = document.querySelector('.dash-cont .cont');
+const notificationOption = document.querySelector('#notifications-option');
+const notificationStatSpan = document.querySelector('#notification-stat');
 // Client dashboard elements
 const transitOption = document.querySelector('#transit')
 const canceledOption = document.querySelector('#cancel')
@@ -61,6 +64,7 @@ function isEmpty(dict) {
 
 // Function to display order from
 function DisplayOrders(user, option) {
+    setNotificationStat();
     allOrdersDiv.style.marginTop = '0px';
     ordersTitle.style.display = 'grid';
     currentOption = option;
@@ -246,6 +250,8 @@ function AddEventListeners(user) {
 
     }
 
+    notificationOption.onclick = showNotifications
+
     // Order statistics event listener for both admin and client dashboards
     orderStatistics.addEventListener('click', (e) => {
         if (e.target.id == 'dlvd') {
@@ -265,7 +271,7 @@ function AddEventListeners(user) {
 function viewOrder(user, mode, orderId) {
     allOrdersDiv.innerHTML = ''
     ordersTitle.style.display = 'none';
-    allOrdersDiv.style.marginTop = '50px';
+    allOrdersDiv.style.marginTop = '30px';
     const singleOrder = document.createElement('div');
     singleOrder.id = 'single-order';
     singleOrder.className = 'single-order'
@@ -434,7 +440,6 @@ function viewOrder(user, mode, orderId) {
                     saveLocation(user, currentLoc, orderId);
                 });
                 deliverBtn.addEventListener('click', () => {
-                    console.log(deliver)
                     changeOrderStatus(true, user, deliver, orderId);
                 });
         
@@ -563,12 +568,160 @@ function setStats(orders){
     rejectedStatSpan.innerText = rejectedStat;
 }
 
-const logoutBtn = document.querySelector('#logout')
+// Display notifications function
+function showNotifications(){
+    allOrdersDiv.innerHTML = ''
+    allOrdersDiv.style.marginTop = '0'
+    ordersTitle.style.display = 'none';
+    var notificationsTitleDiv = document.createElement('div');
+    notificationsTitleDiv.id = 'noti-title';
+    notificationsTitleDiv.innerHTML = `<span class="heading" id="noti-text">Notifications</span><span id="clear-btn">Clear</span>`
+    notificationsTitleDiv.querySelector('#clear-btn').onclick = clearNotifications
+    allOrdersDiv.appendChild(notificationsTitleDiv);
+    var notificationsDiv = document.createElement('div');
+    notificationsDiv.id = 'notifications';
+    var notificationsUrl = 'https://pacific-harbor-80743.herokuapp.com/api/v2/users/' + userId.toString() + '/notifications';
+    fetch(notificationsUrl, {
+        headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'token': token
+        }
+    } )
+    .then(res => {
+        if (res.status == 200){
+            res.json()
+            .then(data => loopThroughNotifications(data.notifications))
+        }else{
+            res.json()
+            .then(data => showSnackbar(plain, data.message))
+        }
+    })
+    .catch(err => console.log(err))
+    
 
+    function loopThroughNotifications(notifications){
+        notifications.forEach(notification => {
+            var colorClass;
+            var message = notification.message;
+            var headerTxt = notification.message.split(' ').pop();
+            var headertxts = [rejected.toLocaleLowerCase(), delivered.toLocaleLowerCase(), canceled.toLocaleLowerCase()];
+            if (!headertxts.includes(headerTxt)){
+                if (headerTxt == 'accepted'){
+                    colorClass = 'in-transit';                    
+                }else{
+                    colorClass = 'plain'
+                    headerTxt = 'location Changed'
+                }
+            }else{ 
+                colorClass = headerTxt;               
+            }
+
+            headerTxt = headerTxt.charAt(0).toUpperCase() + headerTxt.slice(1) + '!';
+            var notificationId = notification.notification_id;
+            var order_id = notification.order_id;
+            var date = notification.created_on;
+
+            var notificationDiv = document.createElement('div');
+            notificationDiv.className = 'notification'
+            notificationDiv.innerHTML = 
+                `<div class="header ${colorClass}"><span class="header-txt">${headerTxt}</span><button class="close-btn">×<span class="noti-id invincible">${notificationId}</span></button></div>
+                <div class="message">
+                    ${message}
+                    <div class="date">${date}</div>
+                    <span class="order-id invincible">${order_id}</span>
+                </div>`
+
+            notificationDiv.querySelector('.message').onclick = e =>{
+                var orderIdSpan = e.target.querySelector('.order-id');
+                var orderId;
+                if (orderIdSpan){
+                    orderId = orderIdSpan.innerText; 
+                    if (pageTitle == 'Dashboard'){
+                        viewOrder(client, view, orderId);
+                    } else {
+                        viewOrder(admin, view, orderId);
+                    }
+                }
+            } 
+            notificationDiv.querySelector('.close-btn').onclick = e => {
+                setNotificationStat();
+                var clickedNotiDiv =  e.target.parentNode.parentNode;
+                clickedNotiDiv.style.display = 'none';
+                var notificationId = e.target.querySelector('.noti-id').innerText;
+                var seeNotificationUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/notifications/${notificationId}`;
+                fetch(seeNotificationUrl, {
+                    method: 'PUT',
+                    headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-type': 'application/json',
+                    'token': token
+                    }
+                })
+                .then(res => res.json())
+                .then(data => showSnackbar(plain, data.message));
+       
+            }
+            notificationsDiv.appendChild(notificationDiv)
+            
+        });
+       
+    }
+
+    allOrdersDiv.appendChild(notificationsDiv);
+
+
+}
+
+// Clear notifications function
+function clearNotifications(){
+    notificationStatSpan.classList.remove('new-notifications');
+    notificationStatSpan.innerText = 0;
+    document.querySelector('#notifications').style.display = 'none';
+    var clearNotificationsUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/users/${userId}/notifications`;
+    fetch(clearNotificationsUrl, {
+        method: 'PUT',
+        headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-type': 'application/json',
+        'token': token
+        }
+    })
+    .then(res => res.json())
+    .then(data => showSnackbar(plain, data.message))
+
+}
+
+// Function to set new notifications stat
+function setNotificationStat(){
+    var notificationsUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/users/${userId}/notifications`;
+    fetch(notificationsUrl, {
+        headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'token': token
+        }
+    } )
+    .then(res => {
+        if (res.status == 200){
+            res.json()
+            .then(data => {
+                notificationStatSpan.innerText = data.notifications.length;
+                notificationStatSpan.classList.add('new-notifications');
+            })
+            
+        }else{
+            notificationStatSpan.innerText = 0;
+            notificationStatSpan.classList.remove('new-notifications');
+        }
+    })
+}
+
+const logoutBtn = document.querySelector('#logout')
+// Logout function
 logoutBtn.onclick = () => {
     sessionStorage.setItem('token', 'gibberish');
     window.location.href = 'login.html';
 }
+
 
 
 // Listen to DOMContentLoaded event
