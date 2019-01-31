@@ -593,7 +593,7 @@ function showNotifications(){
             .then(data => loopThroughNotifications(data.notifications))
         }else{
             res.json()
-            .then(data => showSnackbar(plain, data.message))
+            .then(data => showSnackbar(error, data.message))
         }
     })
     .catch(err => console.log(err))
@@ -659,7 +659,7 @@ function showNotifications(){
                 .then(res => {
                     setNotificationStat()
                     res.json()
-                    .then(data => showSnackbar(plain, data.message));
+                    .then(data => showSnackbar(success, data.message));
                 })
                 
        
@@ -690,7 +690,7 @@ function clearNotifications(){
         }
     })
     .then(res => res.json())
-    .then(data => showSnackbar(plain, data.message))
+    .then(data => showSnackbar(success, data.message))
 
 }
 
