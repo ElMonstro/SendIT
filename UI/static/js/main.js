@@ -732,10 +732,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (pageTitle == 'Admin Dashboard') {
         AddEventListeners(admin);
         DisplayOrders(admin, all);
+        setInterval(()=>{
+            DisplayOrders(admin, all)
+        }, 5*60*1000)
     } else {
         AddEventListeners(client);
         DisplayOrders(client, all);
+        setInterval(()=>{
+            DisplayOrders(client, all)
+        }, 5*60*1000)
     }
 
+    setInterval(()=>{
+        setNotificationStat()
+    }, 0.1*60*1000)
 
 });
