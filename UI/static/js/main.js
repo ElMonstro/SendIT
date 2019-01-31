@@ -644,7 +644,6 @@ function showNotifications(){
                 }
             } 
             notificationDiv.querySelector('.close-btn').onclick = e => {
-                setNotificationStat();
                 var clickedNotiDiv =  e.target.parentNode.parentNode;
                 clickedNotiDiv.style.display = 'none';
                 var notificationId = e.target.querySelector('.noti-id').innerText;
@@ -657,8 +656,12 @@ function showNotifications(){
                     'token': token
                     }
                 })
-                .then(res => res.json())
-                .then(data => showSnackbar(plain, data.message));
+                .then(res => {
+                    setNotificationStat()
+                    res.json()
+                    .then(data => showSnackbar(plain, data.message));
+                })
+                
        
             }
             notificationsDiv.appendChild(notificationDiv)
