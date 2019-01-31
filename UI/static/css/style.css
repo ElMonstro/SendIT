@@ -789,6 +789,14 @@ form{
       
   }
 
+  .new-notifications{
+        background-color: red;
+        width: 27px; 
+        border-radius: 25px;
+        height: 25px;
+        text-align: center;
+  }
+
 /* Animations to fade info messaages in and out */
 @-webkit-keyframes fadein {
     from {bottom: 0; opacity: 0;}
@@ -843,6 +851,7 @@ form{
 
    .no{
        margin-left: 40%;
+       text-align: center;
    }
 
    #new-order{
