@@ -269,7 +269,7 @@ function AddEventListeners(user) {
 function viewOrder(user, mode, orderId) {
     allOrdersDiv.innerHTML = ''
     ordersTitle.style.display = 'none';
-    allOrdersDiv.style.marginTop = '50px';
+    allOrdersDiv.style.marginTop = '30px';
     const singleOrder = document.createElement('div');
     singleOrder.id = 'single-order';
     singleOrder.className = 'single-order'
@@ -566,12 +566,18 @@ function setStats(orders){
     rejectedStatSpan.innerText = rejectedStat;
 }
 
+// Display notifications function
 function showNotifications(){
     allOrdersDiv.innerHTML = ''
+    allOrdersDiv.style.marginTop = '0'
     ordersTitle.style.display = 'none';
-    allOrdersDiv.style.marginTop = '50px';
+    var notificationsTitleDiv = document.createElement('div');
+    notificationsTitleDiv.id = 'noti-title';
+    notificationsTitleDiv.innerHTML = `<span class="heading" id="noti-text">Notifications</span><span id="clear-btn">Clear</span>`
+    notificationsTitleDiv.querySelector('#clear-btn').onclick = clearNotifications
+    allOrdersDiv.appendChild(notificationsTitleDiv);
     var notificationsDiv = document.createElement('div');
-    notificationsDiv.id = 'notifications'
+    notificationsDiv.id = 'notifications';
     var notificationsUrl = 'https://pacific-harbor-80743.herokuapp.com/api/v2/users/' + userId.toString() + '/notifications';
     fetch(notificationsUrl, {
         headers: {
@@ -585,7 +591,7 @@ function showNotifications(){
             .then(data => loopThroughNotifications(data.notifications))
         }else{
             res.json()
-            .then(data => showSnackbar(data.message))
+            .then(data => showSnackbar(plain, data.message))
         }
     })
     .catch(err => console.log(err))
@@ -663,8 +669,25 @@ function showNotifications(){
 
 }
 
-const logoutBtn = document.querySelector('#logout')
+// Clear notifications function
+function clearNotifications(){
+    document.querySelector('#notifications').style.display = 'none';
+    var clearNotificationsUrl = `https://pacific-harbor-80743.herokuapp.com/api/v2/users/${userId}/notifications`;
+    fetch(clearNotificationsUrl, {
+        method: 'PUT',
+        headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-type': 'application/json',
+        'token': token
+        }
+    })
+    .then(res => res.json())
+    .then(data => showSnackbar(plain, data.message))
 
+}
+
+const logoutBtn = document.querySelector('#logout')
+// Logout function
 logoutBtn.onclick = () => {
     sessionStorage.setItem('token', 'gibberish');
     window.location.href = 'login.html';
