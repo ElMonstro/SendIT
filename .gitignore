@@ -105,3 +105,4 @@ venv.bak/
 UI/static/img/Admin Dashboard_files/
 .vscode/settings.json
 node_modules/*
+package-lock.json
