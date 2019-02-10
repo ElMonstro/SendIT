@@ -104,5 +104,11 @@ venv.bak/
 .mypy_cache/
 UI/static/img/Admin Dashboard_files/
 .vscode/settings.json
-node_modules/*
+node_modules/
 package-lock.json
+cypress/integration/examples/
+cypress/support/
+cypress/plugins/
+# cypress/fixtures/
+.DS_Store
+cypress/.DS_Store
