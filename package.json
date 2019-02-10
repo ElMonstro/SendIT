@@ -1,0 +1,13 @@
+{
+    "name": "SendIT",
+    "version": "0.0.0",
+    "scripts": {
+        "tests": "cypress open"
+    },
+    "devDependencies": {
+        "chance": "^1.0.18"
+    },
+    "dependencies": {
+        "cypress": "^3.1.5"
+    }
+}
