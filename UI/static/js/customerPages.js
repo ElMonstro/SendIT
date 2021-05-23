@@ -21,6 +21,7 @@ var currentOption = all;
 const ordersTitle = document.querySelector('#title')
 const orderStatistics = document.querySelector('.order-statistics');
 const pageTitle = document.querySelector('title').innerText
+const createOrderBtn = document.querySelector('#transit')
 
 const transitOption = document.querySelector('#transit')
 const canceledOption = document.querySelector('#cancel')
@@ -86,7 +87,7 @@ function DisplayOrders(user, option) {
         <span class="pickup">${pickupAdd}</span>
         <span class="Destination">${destAdd}</span>
         <span><span class="weight">${weight}</span> Kgs</span>
-        <span><span>Kshs</span> <span class="price"> ${price}</span></span>
+        <span><span>Dihram</span> <span class="price"> ${price}</span></span>
         <span class="statuses"><span class="status">${status}</span>${actionButton}</span></span>`;
 
 
@@ -325,7 +326,6 @@ function viewOrder(user, mode) {
     allOrdersDiv.appendChild(singleOrder);
 
 }
-
 
 // Listen to DOMContentLoaded event
 

@@ -10,7 +10,7 @@
                 <div class="cont">
                     <div class="brand">
                         <div class="logo"><img src="static/img/logo.svg" alt=""></div>
-                        <div class="name"><span>SendIT</span></div>
+                        <div class="name"><span>Century Express</span></div>
                     </div>
                     <nav>
                        <div class="nav">
@@ -22,28 +22,56 @@
                     </nav>
                 </div>
         </header>
-        <section class="form-content" id="register">
-            <form action="">
-                <div class=cont>
-                    <div class="heading">Create New Order</div>          
+        <section class="form-content" id="create-order">
+            <div class="cont">
+            <form action="" onsubmit="createOrder">
+                
+                <h2>Create New Order</h2>
+                <table class="create-order-table">
                     
-        
-                    <label for="recep-no">Recepient Name</label><br>
-                    <input type="text" placeholder="Recepient Name" name="recep-name" required><br> 
-                    
-                    <label for="recep-no">Recepient Phone No.</label><br>
-                    <input type="text" placeholder="0723465798" name="recep-no" required><br> 
+                    <tr>
+                        <td><label for="recep-no">Recepient Name</label><br></td>
+                        <td><input type="text" placeholder="Recepient Name" name="recep-name" required><br> </td>
+                    </tr>
+                    <tr>
+                        <td><label for="recep-no">Recepient Phone No.</label><br></td>
+                        <td><input type="text" placeholder="0723465798" name="recep-no" required><br> </td>
+                    </tr>
+                    <tr>
+                        <td><label for="pickup">Pickup Address</label><br></td>
+                        <td><input type="text" placeholder="3-3544-533" name="pickup" required><br> </td>
+                    </tr>
+                    <tr>
+                        <td><label for="dest">Destination Address</label><br></td>
+                        <td><input type="text" placeholder="7-5452-353" name="dest" required><br> </td>
+                    </tr>
 
-                    <label for="pickup">Pickup Address</label><br>
-                    <input type="text" placeholder="3-3544-533" name="pickup" required><br> 
+                    <tr>
+                        <td><label for="dest">Parcel Description</label><br></td>
+                        <td><textarea name="parcel-desc" id="" cols="30" rows="5"></textarea></td>
+                    </tr>
 
-                    <label for="dest">Destination Address</label><br>
-                    <input type="text" placeholder="7-5452-353" name="dest" required><br> 
+                    <tr>
+                        <td><label for="id-checkbox">Postpaid?</label></td>
+                        <td>
+                            Yes: <input type="radio" id="id-checkbox" name="postpaid"/><br> 
+                            No:  <input type="radio" id="id-checkbox" name="postpaid"/>
+                        </td>
+                    </tr>
                     
-                    <button type="submit" class="btn">Create</button>
-                </div> 
-            </form>    
-        
-              </section>        
+                    <tr>
+                        <td></td>
+                        <td><button type="submit" class="btn" id="create-order-button">Create Order</button></td>
+                    </tr>
+                    
+                    
+
+                </tr>
+                </table>
+               
+            </form>
+        </div> 
+        </section>
+        <script src="static/js/createOrder.js"></script>
 </body>
 </html>

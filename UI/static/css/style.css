@@ -45,7 +45,7 @@ header .cont{
     height: 30px;
 }
 
-header a:hover{
+header . a:hover{
     color: #ffffff;
     background-color: white;
     font-weight: bolder;
@@ -182,7 +182,7 @@ header li{
 }
 
 
- input{
+ input, textarea {
     width: 40%;
     padding: 15px;
     margin: 5px 0 22px 0;
@@ -273,7 +273,7 @@ form{
 }
 
 .side-panel .brand{
-    padding-left: 25%;
+    padding-left: 5%;
     padding-top: 10px;
     padding-bottom: 8px;
     border-bottom: 1px solid #fff;
@@ -398,7 +398,7 @@ form{
     display: grid;
     grid-template-columns: repeat(6, 1fr);    
     background-color: #fff;
-    padding: 5px;
+    padding: 8px;
     border-radius: 3px;
 }
 
@@ -424,7 +424,7 @@ form{
 }
 
 .status{
-    padding: 2px;
+    padding: 4px;
     border-radius: 2px;
     text-align: center;
     color: #fff;
@@ -579,10 +579,10 @@ form{
 
 .action-btn{
     justify-self: end;
-    padding-right: 4px;
     cursor: pointer;
     display: none;
     padding: 4px;
+    margin-left: 5px;
     border-radius: 4px;
     
 }
@@ -611,4 +611,28 @@ form{
     
 
     
+}
+
+.create-order-table {
+    width: 500px;
+}
+
+.create-order-table input, .create-order-table textarea {
+    width: 200px;
+}
+
+#create-order-button {
+    width: 240px;
+}
+
+#create-order .cont {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    padding-bottom: 20px;
+}
+
+#create-order {
+    margin-bottom: 20px;
 }
